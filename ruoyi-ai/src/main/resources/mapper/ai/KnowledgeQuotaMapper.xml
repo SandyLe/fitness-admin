@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai.mapper.KnowledgeQuotaMapper">
+    
+    <resultMap type="com.ruoyi.ai.domain.KnowledgeQuota" id="KnowledgeQuotaResult">
+        <result property="quotaId"    column="quota_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="maxStorageBytes"    column="max_storage_bytes"    />
+        <result property="maxKbCount"    column="max_kb_count"    />
+        <result property="usedStorageBytes"    column="used_storage_bytes"    />
+        <result property="usedKbCount"    column="used_kb_count"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectKnowledgeQuotaVo">
+        select quota_id, user_id, max_storage_bytes, max_kb_count, used_storage_bytes, used_kb_count, create_by, create_time, update_by, update_time from ai_knowledge_quota
+    </sql>
+
+    <select id="selectKnowledgeQuotaList" parameterType="com.ruoyi.ai.domain.KnowledgeQuota" resultMap="KnowledgeQuotaResult">
+        <include refid="selectKnowledgeQuotaVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="maxStorageBytes != null "> and max_storage_bytes = #{maxStorageBytes}</if>
+            <if test="maxKbCount != null "> and max_kb_count = #{maxKbCount}</if>
+            <if test="usedStorageBytes != null "> and used_storage_bytes = #{usedStorageBytes}</if>
+            <if test="usedKbCount != null "> and used_kb_count = #{usedKbCount}</if>
+            <if test="createBy != null and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectKnowledgeQuotaByQuotaId" parameterType="Long" resultMap="KnowledgeQuotaResult">
+        <include refid="selectKnowledgeQuotaVo"/>
+        where quota_id = #{quotaId}
+    </select>
+
+    <insert id="insertKnowledgeQuota" parameterType="com.ruoyi.ai.domain.KnowledgeQuota" useGeneratedKeys="true" keyProperty="quotaId">
+        insert into ai_knowledge_quota
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="maxStorageBytes != null">max_storage_bytes,</if>
+            <if test="maxKbCount != null">max_kb_count,</if>
+            <if test="usedStorageBytes != null">used_storage_bytes,</if>
+            <if test="usedKbCount != null">used_kb_count,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="maxStorageBytes != null">#{maxStorageBytes},</if>
+            <if test="maxKbCount != null">#{maxKbCount},</if>
+            <if test="usedStorageBytes != null">#{usedStorageBytes},</if>
+            <if test="usedKbCount != null">#{usedKbCount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKnowledgeQuota" parameterType="com.ruoyi.ai.domain.KnowledgeQuota">
+        update ai_knowledge_quota
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="maxStorageBytes != null">max_storage_bytes = #{maxStorageBytes},</if>
+            <if test="maxKbCount != null">max_kb_count = #{maxKbCount},</if>
+            <if test="usedStorageBytes != null">used_storage_bytes = #{usedStorageBytes},</if>
+            <if test="usedKbCount != null">used_kb_count = #{usedKbCount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where quota_id = #{quotaId}
+    </update>
+
+    <delete id="deleteKnowledgeQuotaByQuotaId" parameterType="Long">
+        delete from ai_knowledge_quota where quota_id = #{quotaId}
+    </delete>
+
+    <delete id="deleteKnowledgeQuotaByQuotaIds" parameterType="String">
+        delete from ai_knowledge_quota where quota_id in 
+        <foreach item="quotaId" collection="array" open="(" separator="," close=")">
+            #{quotaId}
+        </foreach>
+    </delete>
+</mapper>

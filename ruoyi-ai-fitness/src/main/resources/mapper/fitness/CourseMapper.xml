@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.Course" id="courseResult">
+        <result property="courseId"    column="course_id"    />
+        <result property="themeId"    column="theme_id"    />
+        <result property="name"    column="name"    />
+        <result property="brifeIntroduction"    column="brife_introduction"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="courseDesc"    column="course_desc"    />
+        <result property="duration"    column="duration"    />
+        <result property="isShowIndex"    column="is_show_index"    />
+        <result property="level"    column="level"    />
+        <result property="code"    column="code"    />
+        <result property="courseAction"    column="course_action"    />
+        <result property="groupsCount"    column="groups_count"    />
+        <result property="actionsCount"    column="actions_count"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCourseVo">
+        select course_id, theme_id, name, brife_introduction, video_url, img_url, course_desc, duration, is_show_index, level, code, course_action, groups_count, actions_count, create_by, create_time, update_by, update_time from course
+    </sql>
+
+    <select id="selectCourseList" parameterType="com.ruoyi.fitness.domain.Course" resultMap="courseResult">
+        <include refid="selectCourseVo"/>
+        <where>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="name != null "> and name = #{name}</if>
+            <if test="themeId != null "> and theme_id = #{themeId}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseById" parameterType="Long" resultMap="courseResult">
+        <include refid="selectCourseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCourse" parameterType="com.ruoyi.fitness.domain.Course" useGeneratedKeys="true" keyProperty="id">
+        insert into course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="themeId != null">theme_id,</if>
+            <if test="name != null">name,</if>
+            <if test="brifeIntroduction != null">brife_introduction,</if>
+            <if test="videoUrl != null">video_url,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="courseDesc != null">course_desc,</if>
+            <if test="duration != null">duration,</if>
+            <if test="isShowIndex != null">is_show_index,</if>
+            <if test="level != null">level,</if>
+            <if test="code != null">code,</if>
+            <if test="courseAction != null">course_action,</if>
+            <if test="groupsCount != null">groups_count,</if>
+            <if test="actionsCount != null">actions_count,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="themeId != null">#{themeId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="brifeIntroduction != null">#{brifeIntroduction},</if>
+            <if test="videoUrl != null">#{videoUrl},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="courseDesc != null">#{courseDesc},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="isShowIndex != null">#{isShowIndex},</if>
+            <if test="level != null">#{level},</if>
+            <if test="code != null">#{code},</if>
+            <if test="courseAction != null">#{courseAction},</if>
+            <if test="groupsCount != null">#{groupsCount},</if>
+            <if test="actionsCount != null">#{actionsCount},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourse" parameterType="com.ruoyi.fitness.domain.Course">
+        update course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="themeId != null">theme_id = #{themeId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="brifeIntroduction != null">brife_introduction = #{brifeIntroduction},</if>
+            <if test="videoUrl != null">video_url = #{videoUrl},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="courseDesc != null">course_desc = #{courseDesc},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="isShowIndex != null">is_show_index = #{isShowIndex},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="courseAction != null">course_action = #{courseAction},</if>
+            <if test="groupsCount != null">groups_count = #{groupsCount},</if>
+            <if test="actionsCount != null">actions_count = #{actionsCount},</if>
+            <if test="isDeleted != null">isDeleted = #{is_deleted},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where course_id = #{courseId}
+    </update>
+
+    <delete id="deleteCourseById" parameterType="Long">
+        delete from course where course_id = #{courseId}
+    </delete>
+
+    <delete id="deleteCourseByIds" parameterType="String">
+        delete from course where course_id in
+        <foreach item="courseId" collection="array" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </delete>
+</mapper>

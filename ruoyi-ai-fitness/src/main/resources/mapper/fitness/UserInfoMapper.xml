@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.UserInfoMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.UserInfo" id="UserInfoResult">
+        <result property="id"    column="id"    />
+        <result property="weight"    column="weight"    />
+        <result property="height"    column="height"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="email"    column="email"    />
+        <result property="phone"    column="phone"    />
+        <result property="password"    column="password"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="status"    column="status"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="extJson"    column="ext_json"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="fitnessGoal"    column="fitness_goal"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserInfoVo">
+        select id, weight, height, user_name, nick_name, email, phone, avatar, status, introduce, ext_json, gender, age, fitness_goal, create_by, create_time, update_by, update_time from user_info
+    </sql>
+
+    <select id="selectUserInfoList" parameterType="com.ruoyi.fitness.domain.UserInfo" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userName != null "> and user_name = #{userName}</if>
+            <if test="nickName != null "> and nick_name = #{nickName}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectUserInfoById" parameterType="Long" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserInfo" parameterType="com.ruoyi.fitness.domain.UserInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="UserInfoName != null and UserInfoName != ''">UserInfo_name,</if>
+            <if test="height != null">height,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="knowledgeBaseIds != null">knowledge_base_ids,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="systemPrompt != null">system_prompt,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="maxTokens != null">max_tokens,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="UserInfoName != null and UserInfoName != ''">#{UserInfoName},</if>
+            <if test="UserInfoDescription != null">#{UserInfoDescription},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="knowledgeBaseIds != null">#{knowledgeBaseIds},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="systemPrompt != null">#{systemPrompt},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="maxTokens != null">#{maxTokens},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserInfo" parameterType="com.ruoyi.fitness.domain.UserInfo">
+        update user_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="extJson != null">ext_json = #{extJson},</if>
+            <if test="fitnessGoal != null">fitness_goal = #{fitnessGoal},</if>
+            <if test="isDeleted != null">isDeleted = #{is_deleted},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserInfoById" parameterType="Long">
+        delete from user_info where id = #{id}
+    </delete>
+
+    <delete id="deleteUserInfoByIds" parameterType="String">
+        delete from user_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,12 @@
+# 删除索引
+FT.DROPINDEX ai-embeddings
+
+# 查看所有索引
+FT._LIST
+
+# 创建索引
+FT.CREATE ai-embeddings ON JSON PREFIX 1 knowledge: SCHEMA $.text AS text TEXT $.vector AS vector VECTOR FLAT 6 TYPE FLOAT32 DIM 1024 DISTANCE_METRIC COSINE $.kbId AS kbId TAG $.docId AS docId TAG
+
+
+# 创建索引（开发环境）
+FT.CREATE ai-embeddings-local ON JSON PREFIX 1 knowledge_local: SCHEMA $.text AS text TEXT $.vector AS vector VECTOR FLAT 6 TYPE FLOAT32 DIM 1024 DISTANCE_METRIC COSINE $.kbId AS kbId TAG $.docId AS docId TAG

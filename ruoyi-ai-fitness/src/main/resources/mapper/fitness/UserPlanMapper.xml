@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.UserPlanMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.UserPlan" id="UserPlanResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="plan"    column="plan"    />
+        <result property="context"    column="context"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updatedBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserPlanVo">
+        select id, user_id, plan, context, create_by, create_time, update_by, update_time from user_plan
+    </sql>
+
+    <select id="selectUserPlanList" parameterType="com.ruoyi.fitness.domain.UserPlan" resultMap="UserPlanResult">
+        <include refid="selectUserPlanVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="plan != null  and plan != ''"> and plan like concat('%', #{plan}, '%')</if>
+            <if test="context != null  and context != ''"> and context = #{context}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectUserPlanById" parameterType="Long" resultMap="UserPlanResult">
+        <include refid="selectUserPlanVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserPlan" parameterType="com.ruoyi.fitness.domain.UserPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_UserPlan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="UserPlanName != null and UserPlanName != ''">UserPlan_name,</if>
+            <if test="UserPlanDescription != null">UserPlan_description,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="knowledgeBaseIds != null">knowledge_base_ids,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="systemPrompt != null">system_prompt,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="maxTokens != null">max_tokens,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="UserPlanName != null and UserPlanName != ''">#{UserPlanName},</if>
+            <if test="UserPlanDescription != null">#{UserPlanDescription},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="knowledgeBaseIds != null">#{knowledgeBaseIds},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="systemPrompt != null">#{systemPrompt},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="maxTokens != null">#{maxTokens},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserPlan" parameterType="com.ruoyi.fitness.domain.UserPlan">
+        update ai_UserPlan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="UserPlanName != null and UserPlanName != ''">UserPlan_name = #{UserPlanName},</if>
+            <if test="UserPlanDescription != null">UserPlan_description = #{UserPlanDescription},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="knowledgeBaseIds != null">knowledge_base_ids = #{knowledgeBaseIds},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="systemPrompt != null">system_prompt = #{systemPrompt},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="maxTokens != null">max_tokens = #{maxTokens},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserPlanById" parameterType="Long">
+        delete from ai_UserPlan where id = #{id}
+    </delete>
+
+    <delete id="deleteUserPlanByIds" parameterType="String">
+        delete from ai_UserPlan where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

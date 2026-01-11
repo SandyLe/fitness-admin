@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ai.mapper.KnowledgeDocumentMapper">
+
+    <resultMap type="com.ruoyi.ai.domain.KnowledgeDocument" id="KnowledgeDocumentResult">
+        <result property="id"    column="id"    />
+        <result property="kbId"    column="kb_id"    />
+        <result property="docName"    column="doc_name"    />
+        <result property="docType"    column="doc_type"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="status"    column="status"    />
+        <result property="processResult"    column="process_result"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="vectorId"    column="vectorId"    />
+    </resultMap>
+
+    <sql id="selectKnowledgeDocumentVo">
+        select id, kb_id, doc_name, doc_type, file_path, file_size, status, process_result, create_time, update_time, vectorId from ai_knowledge_document
+    </sql>
+
+    <select id="selectKnowledgeDocumentList" parameterType="com.ruoyi.ai.domain.KnowledgeDocument" resultMap="KnowledgeDocumentResult">
+        <include refid="selectKnowledgeDocumentVo"/>
+        <where>
+            <if test="kbId != null "> and kb_id = #{kbId}</if>
+            <if test="docName != null  and docName != ''"> and doc_name like concat('%', #{docName}, '%')</if>
+            <if test="docType != null  and docType != ''"> and doc_type = #{docType}</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="processResult != null  and processResult != ''"> and process_result = #{processResult}</if>
+            <if test="vectorId != null  and vectorId != ''"> and vectorId = #{vectorId}</if>
+        </where>
+    </select>
+
+    <select id="selectKnowledgeDocumentById" parameterType="Long" resultMap="KnowledgeDocumentResult">
+        <include refid="selectKnowledgeDocumentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertKnowledgeDocument" parameterType="com.ruoyi.ai.domain.KnowledgeDocument" useGeneratedKeys="true" keyProperty="id">
+        insert into ai_knowledge_document
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kbId != null">kb_id,</if>
+            <if test="docName != null and docName != ''">doc_name,</if>
+            <if test="docType != null and docType != ''">doc_type,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="status != null">status,</if>
+            <if test="processResult != null">process_result,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="vectorId != null">vectorId,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="kbId != null">#{kbId},</if>
+            <if test="docName != null and docName != ''">#{docName},</if>
+            <if test="docType != null and docType != ''">#{docType},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="status != null">#{status},</if>
+            <if test="processResult != null">#{processResult},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="vectorId != null">#{vectorId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKnowledgeDocument" parameterType="com.ruoyi.ai.domain.KnowledgeDocument">
+        update ai_knowledge_document
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="kbId != null">kb_id = #{kbId},</if>
+            <if test="docName != null and docName != ''">doc_name = #{docName},</if>
+            <if test="docType != null and docType != ''">doc_type = #{docType},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="processResult != null">process_result = #{processResult},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="vectorId != null">vectorId = #{vectorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteKnowledgeDocumentById" parameterType="Long">
+        delete from ai_knowledge_document where id = #{id}
+    </delete>
+
+    <delete id="deleteKnowledgeDocumentByIds" parameterType="String">
+        delete from ai_knowledge_document where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据用户ID统计文档数量 -->
+    <select id="countByUserId" parameterType="Long" resultType="Long">
+        SELECT COUNT(*) FROM ai_knowledge_document doc INNER JOIN ai_knowledge_base kb ON doc.kb_id = kb.id
+        WHERE kb.user_id = #{userId} AND kb.status = 1 AND doc.status = 1
+    </select>
+</mapper>
