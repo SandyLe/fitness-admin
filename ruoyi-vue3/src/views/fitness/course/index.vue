@@ -26,7 +26,7 @@
           plain
           icon="Plus"
           @click="handleAdd"
-          v-hasPermi="['ai:userInfo:add']"
+          v-hasPermi="['fitness:course:add']"
         >{{ $t('common.add') }}</el-button>
       </el-col>
 <!--        <el-col :span="1.5">
@@ -35,8 +35,8 @@
           plain
           :disabled="single"
           @click="handlePush"
-          v-hasPermi="['ai:userInfo:history']"
-        >{{ $t('userInfo.history') }}</el-button>
+          v-hasPermi="['fitness:course:history']"
+        >{{ $t('course.history') }}</el-button>
       </el-col>-->
       <el-col :span="1.5">
         <el-button
@@ -45,7 +45,7 @@
           icon="Edit"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['ai:course:edit']"
+          v-hasPermi="['fitness:course:edit']"
         >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -55,7 +55,7 @@
           icon="Delete"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['ai:course:remove']"
+          v-hasPermi="['fitness:course:remove']"
         >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -64,7 +64,7 @@
           plain
           icon="Download"
           @click="handleExport"
-          v-hasPermi="['ai:course:export']"
+          v-hasPermi="['fitness:course:export']"
         >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -76,9 +76,14 @@
       <el-table-column :label="$t('course.code')" align="center" prop="code" :show-overflow-tooltip="true"/>
 <!--      <el-table-column :label="$t('course.courseId')" align="center" prop="courseId" />-->
       <el-table-column :label="$t('course.name')" align="center" prop="name" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('course.theme')" align="center" prop="themeId" :show-overflow-tooltip="true">
+        <template #default="scope">
+          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || '未指定' }}
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('course.brifeIntroduction')" align="center" prop="brifeIntroduction" :show-overflow-tooltip="true">
         <template #default="scope">
-          <div v-html="scope.row.brifeIntroduction"></div>
+          <div v-html="scope.row.brifeIntroduction.replace(/\n/g, '<br>')"></div>
         </template>
       </el-table-column>
 <!--      <el-table-column :label="$t('course.imgUrl')" align="center" prop="imgUrl" :show-overflow-tooltip="true">
@@ -96,21 +101,21 @@
           <div v-html="scope.row.courseDesc"></div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('common.createdTime')" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createdTime')" align="center" prop="createTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createdTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('common.updatedTime')" align="center" prop="updateTime" width="180">
+      <el-table-column :label="$t('common.updatedTime')" align="center" prop="updateTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.updatedTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-           <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['ai:userInfo:edit']">{{ $t('userInfo.visitUserInfo') }}</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['ai:userInfo:edit']">{{ $t('common.edit') }}</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['ai:userInfo:remove']">{{ $t('common.delete') }}</el-button>
+          <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['fitness:course:edit']">{{ $t('course.visitCourse') }}</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['fitness:course:edit']">{{ $t('common.edit') }}</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['fitness:course:remove']">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -123,60 +128,77 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改智能体对话框 -->
+    <!-- 添加或修改课程对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" append-to-body>
-      <el-form ref="userInfoRef" :model="form" :rules="rules" label-width="180px">
-        <el-form-item :label="$t('userInfo.userName')" prop="userName">
-          <el-input v-model="form.userName" :placeholder="$t('userInfo.userName')" />
+      <el-form ref="courseRef" :model="form" :rules="rules" label-width="180px">
+        <el-form-item :label="$t('course.name')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('course.namePlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('userInfo.nickName')" prop="nickName">
-          <el-input v-model="form.nickName" :placeholder="$t('userInfo.nickNamePlaceholder')" />
+        <el-form-item :label="$t('course.code')" prop="code">
+          <el-input v-model="form.code" :placeholder="$t('course.codePlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('userInfo.age')" prop="age">
-          <el-input v-model="form.age" :placeholder="$t('userInfo.nickNamePlaceholder')" />
-        </el-form-item>
-        <el-form-item :label="$t('userInfo.gender')" prop="gender">
-          <el-select v-model="form.gender" :placeholder="$t('userInfo.modelPlaceholder')">
-            <el-option v-for="item in genderList" :key="item.value" :label="item.text" :value="item.value" />
+        <el-form-item :label="$t('course.theme')" prop="themeId">
+          <el-select v-model="form.themeId" :placeholder="$t('course.themePlaceholder')">
+            <el-option v-for="item in themeList" :key="item.id" :label="item.themeName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('userInfo.height')" prop="height">
-          <el-input v-model="form.height" :placeholder="$t('userInfo.heightPlaceholder')" />
+        <el-form-item :label="$t('course.brifeIntroduction')" prop="brifeIntroduction">
+          <el-input v-model="form.brifeIntroduction" type="textarea" :placeholder="$t('course.brifeIntroductionPlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('userInfo.weight')" prop="weight">
-          <el-input v-model="form.weight" :placeholder="$t('userInfo.weightPlaceholder')" />
+        <el-form-item :label="$t('course.courseDesc')" prop="courseDesc">
+          <el-input v-model="form.courseDesc" type="textarea" :placeholder="$t('course.courseDescPlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('userInfo.email')" prop="email">
-          <el-input v-model="form.email" :placeholder="$t('userInfo.emailPlaceholder')" />
+        <el-form-item :label="$t('course.isShowIndex')" prop="isShowIndex">
+          <el-switch v-model="form.isShowIndex" class="drawer-switch" :placeholder="$t('course.isShowIndexPlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('userInfo.phone')" prop="phone">
-          <el-input v-model="form.phone" :placeholder="$t('userInfo.phonePlaceholder')" />
-        </el-form-item>
-        <el-form-item :label="$t('userInfo.introduce')" prop="introduce">
-          <el-input v-model="form.introduce" type="textarea" :placeholder="$t('userInfo.introduce')" />
-        </el-form-item>
-        <el-form-item :label="$t('userInfo.fitnessGoal')" prop="fitnessGoal">
-          <el-input v-model="form.fitnessGoal" type="textarea" :placeholder="$t('userInfo.fitnessGoal')" />
-        </el-form-item>
-<!--        <el-form-item :label="$t('userInfo.knowledgeBase')" prop="knowledgeBaseIds">
-          <el-select v-model="form.knowledgeBaseIds" multiple :placeholder="$t('userInfo.knowledgeBasePlaceholder')">
-            <el-option v-for="item in knowbaseList" :key="item.id" :label="item.kbName" :value="item.id" />
+        <el-form-item :label="$t('course.level')" prop="level">
+          <el-select v-model="form.level" :placeholder="$t('course.levelPlaceholder')">
+            <el-option v-for="item in levelList" :key="item.id" :label="item.text" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('userInfo.systemPrompt')" prop="systemPrompt">
-          <el-input v-model="form.systemPrompt" type="textarea" :placeholder="$t('userInfo.systemPromptPlaceholder')" />
+        <el-form-item :label="$t('course.courseAction')" prop="courseAction">
+          <el-input v-model="form.courseAction" :placeholder="$t('course.courseActionPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="$t('course.groupsCount')" prop="groupsCount">
+          <el-input v-model="form.groupsCount" :placeholder="$t('course.groupsCountPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="$t('course.actionsCount')" prop="actionsCount">
+          <el-input v-model="form.actionsCount" :placeholder="$t('course.fitnessGoalPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="$t('course.imgUrl')" prop="imgUrl">
           <el-upload
-            ref="systemPromptRef"
-            class="avatar-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            :on-success="importSystemPrompt"
-            :accept="'.txt'"
+              ref="imgUrlRef"
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="importImgUrl"
+              :accept="'.png,.jpg,.jpeg'"
+              :headers="headers"
           >
             <el-button size="small" type="primary">{{ $t('common.import') }}</el-button>
           </el-upload>
-          
-        </el-form-item>-->
+        </el-form-item>
+        <el-form-item :label="$t('course.videoUrl')" prop="videoUrl">
+          <el-input v-model="form.systemPrompt" type="hidden" :placeholder="$t('course.videoUrlPlaceholder')" />
+          <el-upload
+              ref="videoUrlRef"
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="importVideoUrl"
+              :accept="'.mp4,.avi,.rmv,rmvb,3gp'"
+              :headers="headers"
+          >
+            <el-button size="small" type="primary">{{ $t('common.import') }}</el-button>
+          </el-upload>
+
+        </el-form-item>
+<!--        <el-form-item :label="$t('course.knowledgeBase')" prop="knowledgeBaseIds">
+          <el-select v-model="form.knowledgeBaseIds" multiple :placeholder="$t('course.knowledgeBasePlaceholder')">
+            <el-option v-for="item in knowbaseList" :key="item.id" :label="item.kbName" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        -->
 <!--        <el-form-item label="温度参数(0-1)" prop="temperature">-->
 <!--          <el-input v-model="form.temperature" placeholder="请输入温度参数(0-1)" />-->
 <!--        </el-form-item>-->
@@ -197,59 +219,32 @@
       <el-form :model="form" label-width="120px">
         <el-row>
           <el-col :span="12">
-            <el-form-item :label="$t('userInfo.userName')">{{ form.userName }}</el-form-item>
-            <el-form-item :label="$t('userInfo.gender')">
-              <div v-if="form.gender == 'male'">{{ $t('userInfo.male') }}</div>
-              <div v-else-if="form.gender == 'female'">{{ $t('userInfo.female') }}</div>
+            <el-form-item :label="$t('course.name')">{{ form.name }}</el-form-item>
+            <el-form-item :label="$t('course.theme')">
+              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || '未指定' }}</div>
             </el-form-item>
-            <el-form-item :label="$t('userInfo.height')">{{ form.height }}</el-form-item>
-            <el-form-item :label="$t('userInfo.email')">{{ form.email }}</el-form-item>
+            <el-form-item :label="$t('course.level')">{{ form.level }}</el-form-item>
+            <el-form-item :label="$t('course.groupsCount')">{{ form.groupsCount }}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item :label="$t('userInfo.nickName')">{{ form.nickName }}</el-form-item>
-            <el-form-item :label="$t('userInfo.age')">{{ form.age }}</el-form-item>
-            <el-form-item :label="$t('userInfo.weight')">{{ form.weight }}</el-form-item>
-            <el-form-item :label="$t('userInfo.phone')">{{ form.phone }}</el-form-item>
+            <el-form-item :label="$t('course.code')">{{ form.code }}</el-form-item>
+            <el-form-item :label="$t('course.isShowIndex')">
+              <div v-if="form.isShowIndex == '1'">{{ $t('common.yes') }}</div>
+              <div v-else-if="form.isShowIndex == '0'">{{ $t('common.no') }}</div>
+            </el-form-item>
+            <el-form-item :label="$t('course.courseAction')">{{ form.courseAction }}</el-form-item>
+            <el-form-item :label="$t('course.actionsCount')">{{ form.actionsCount }}</el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="$t('userInfo.introduce')">{{ form.introduce }}</el-form-item>
+            <el-form-item :label="$t('course.brifeIntroduction')">{{ form.brifeIntroduction }}</el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item :label="$t('userInfo.fitnessGoal')">{{ form.fitnessGoal }}</el-form-item>
+            <el-form-item :label="$t('course.courseDesc')">{{ form.courseDesc }}</el-form-item>
           </el-col>
-          <!--          <el-col :span="12">
-                      <el-form-item :label="$t('userInfo.cronExpression')">{{ form.cronExpression }}</el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('userInfo.nextValidTime')">{{ parseTime(form.nextValidTime) }}</el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                      <el-form-item :label="$t('userInfo.invokeTarget')">{{ form.invokeTarget }}</el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('userInfo.status')">
-                        <div v-if="form.status == 0">{{ $t('userInfo.normal') }}</div>
-                        <div v-else-if="form.status == 1">{{ $t('userInfo.paused') }}</div>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('userInfo.concurrent')">
-                        <div v-if="form.concurrent == 0">{{ $t('userInfo.allowConcurrent') }}</div>
-                        <div v-else-if="form.concurrent == 1">{{ $t('userInfo.disallowConcurrent') }}</div>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('job.misfirePolicy')">
-                        <div v-if="form.misfirePolicy == 0">{{ $t('userInfo.defaultPolicy') }}</div>
-                        <div v-else-if="form.misfirePolicy == 1">{{ $t('userInfo.immediateExecution') }}</div>
-                        <div v-else-if="form.misfirePolicy == 2">{{ $t('userInfo.executeOnce') }}</div>
-                        <div v-else-if="form.misfirePolicy == 3">{{ $t('userInfo.giveUpExecution') }}</div>
-                      </el-form-item>
-                    </el-col>-->
         </el-row>
       </el-form>
       <template #footer>
@@ -262,15 +257,19 @@
 </template>
 
 <script setup name="course">
+import { getToken } from "@/utils/auth"
 import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api/fitness/course"
+import { listCourseTheme } from "@/api/fitness/courseTheme"
 import { listModel } from "@/api/ai/model"
 import { listKnowbase } from "@/api/ai/knowbase"
 
+const headers = ref({ Authorization: "Bearer " + getToken() })
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
 const courseList = ref([])
 const themeList = ref([])
+const levelList = [{"id":"初级","text":"初级"},{"id":"中级","text":"中级"},{"id":"高级","text":"高级"}]
 const open = ref(false)
 const openView = ref(false)
 const loading = ref(true)
@@ -294,7 +293,7 @@ const data = reactive({
       { required: true, message: proxy.$t('course.namePlaceholder'), trigger: "blur" }
     ],
     modelId: [
-      { required: true, message: proxy.$t('userInfo.modelPlaceholder'), trigger: "blur" }
+      { required: true, message: proxy.$t('course.modelPlaceholder'), trigger: "blur" }
     ],
     // userId: [
     //   { required: true, message: "创建用户ID不能为空", trigger: "blur" }
@@ -311,18 +310,17 @@ const data = reactive({
   }
 })
 const modelList = ref([])
-const genderList = [{'value':'male', 'text': proxy.$t('userInfo.male')}, {'value':'female', 'text': proxy.$t('userInfo.female')}]
 const knowbaseList = ref([])
 const { queryParams, form, rules } = toRefs(data)
 
 /** 查看详情 */
 function handleVisit(row) {
   reset()
-  const _id = row.id || ids.value
+  const _id = row.courseId || ids.value
   getCourse(_id).then(response => {
     form.value = response.data
     openView.value = true
-    title.value = proxy.$t('userInfo.viewUserInfo')
+    title.value = proxy.$t('course.viewCourse')
   })
 }
 /** 新增按钮操作 */
@@ -335,7 +333,7 @@ function handlePush() {
     }
   })
 }
-/** 查询智能体列表 */
+/** 查询课程列表 */
 function getList() {
   loading.value = true
   listCourse(queryParams.value).then(response => {
@@ -354,7 +352,7 @@ function cancel() {
 // 表单重置
 function reset() {
   form.value = {
-    id: null,
+    courseId: null,
     nickName: null,
     userName: null,
     phone: null,
@@ -367,7 +365,7 @@ function reset() {
     createdTime: null,
     updatedTime: null
   }
-  proxy.resetForm("userInfoRef")
+  proxy.resetForm("courseRef")
 }
 
 /** 搜索按钮操作 */
@@ -381,16 +379,30 @@ function resetQuery() {
   proxy.resetForm("queryRef")
   handleQuery()
 }
-/** 导入系统提示词 */
-function importSystemPrompt(res,file) {
-  //上传txt文件 获取文件内容赋值给systemPrompt
+function getCourseThemeList() {
+  listCourseTheme().then(response => {
+    themeList.value = response.rows
+  })
+}
+/** 导入课程封面 */
+function importImgUrl(res,file) {
+  //上传img文件 获取文件内容赋值给imgUrl
   if (res.code === 200) {
-    form.value.systemPrompt = res.fileName
+    form.value.imgUrl = res.fileName
   } else {
     proxy.$modal.msgError(res.msg)
-    proxy.$refs.systemPromptRef.handleRemove(file)
+    proxy.$refs.imgUrlRef.handleRemove(file)
   }
-
+}
+/** 导入课程教学视频 */
+function importVideoUrl(res,file) {
+  //上传video文件 获取文件内容赋值给videoUrl
+  if (res.code === 200) {
+    form.value.videoUrl = res.fileName
+  } else {
+    proxy.$modal.msgError(res.msg)
+    proxy.$refs.videoUrlRef.handleRemove(file)
+  }
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
@@ -404,35 +416,34 @@ function handleAdd() {
   reset()
   
   open.value = true
-  title.value = proxy.$t('userInfo.addCourse')
+  title.value = proxy.$t('course.addCourse')
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset()
-  const _id = row.id || ids.value
+  const _id = row.courseId || ids.value
   getCourse(_id).then(response => {
     form.value = response.data
-    form.value.knowledgeBaseIds = form.value.knowledgeBaseIds ? form.value.knowledgeBaseIds.split(',').map(Number) : [];
     open.value = true
-    title.value = proxy.$t('userInfo.updateCourse')
+    title.value = proxy.$t('course.updateCourse')
   })
 }
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["userInfoRef"].validate(valid => {
+  proxy.$refs["courseRef"].validate(valid => {
     if (valid) {
       form.value.knowledgeBaseIds = form.value.knowledgeBaseIds ? form.value.knowledgeBaseIds.join(',') : '';
-      if (form.value.id != null) {
+      if (form.value.courseId != null) {
         updateCourse(form.value).then(response => {
-          proxy.$modal.msgSuccess(proxy.$t('userInfo.updateCourseSuccess'))
+          proxy.$modal.msgSuccess(proxy.$t('course.updateCourseSuccess'))
           open.value = false
           getList()
         })
       } else {
         addCourse(form.value).then(response => {
-          proxy.$modal.msgSuccess(proxy.$t('userInfo.addCourseSuccess'))
+          proxy.$modal.msgSuccess(proxy.$t('course.addCourseSuccess'))
           open.value = false
           getList()
         })
@@ -443,29 +454,21 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const _ids = row.id || ids.value
-  proxy.$modal.confirm(proxy.$t('userInfo.confirmDelete', _ids)).then(function() {
+  const _ids = row.courseId || ids.value
+  proxy.$modal.confirm(proxy.$t('course.confirmDelete', _ids)).then(function() {
     return delCourse(_ids)
   }).then(() => {
     getList()
-    proxy.$modal.msgSuccess(proxy.$t('userInfo.deleteSuccess'))
+    proxy.$modal.msgSuccess(proxy.$t('course.deleteSuccess'))
   }).catch(() => {})
 }
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('ai/userInfo/export', {
+  proxy.download('ai/course/export', {
     ...queryParams.value
-  }, `userInfo_${new Date().getTime()}.xlsx`)
+  }, `course${new Date().getTime()}.xlsx`)
 }
-getList()
-const getKnowledgeBaseNames = computed(() => (knowledgeBaseIds) => {
-  console.log('knowledgeBaseIds',knowledgeBaseIds, knowbaseList.value)
-  if (!knowledgeBaseIds) return proxy.$t('userInfo.noKnowledgeBase');
-  return knowledgeBaseIds
-    .split(',')
-    .map(id => id.trim())
-    .map(id => knowbaseList.value.find(item => item.id === Number(id))?.kbName || proxy.$t('userInfo.unknownKnowledgeBase'))
-    .join(', ');
-});
+getCourseThemeList()
+getList();
 </script>

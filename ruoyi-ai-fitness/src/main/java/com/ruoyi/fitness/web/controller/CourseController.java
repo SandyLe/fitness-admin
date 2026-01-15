@@ -41,7 +41,7 @@ public class CourseController extends BaseController
     /**
      * 获取课程详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ai:Course:query')")
+    @PreAuthorize("@ss.hasPermi('fitness:course:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -51,7 +51,7 @@ public class CourseController extends BaseController
     /**
      * 新增课程
      */
-    @PreAuthorize("@ss.hasPermi('ai:Course:add')")
+    @PreAuthorize("@ss.hasPermi('fitness:course:add')")
     @Log(title = "课程", code = "log.ai.Course", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Course Course)
@@ -62,7 +62,7 @@ public class CourseController extends BaseController
     /**
      * 修改课程
      */
-    @PreAuthorize("@ss.hasPermi('ai:Course:edit')")
+    @PreAuthorize("@ss.hasPermi('fitness:course:edit')")
     @Log(title = "课程", code = "log.ai.Course", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Course Course)
@@ -73,7 +73,7 @@ public class CourseController extends BaseController
     /**
      * 删除课程
      */
-    @PreAuthorize("@ss.hasPermi('ai:Course:remove')")
+    @PreAuthorize("@ss.hasPermi('fitness:course:remove')")
     @Log(title = "课程", code = "log.ai.Course", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

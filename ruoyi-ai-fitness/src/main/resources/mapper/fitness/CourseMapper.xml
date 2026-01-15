@@ -45,10 +45,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectCourseById" parameterType="Long" resultMap="courseResult">
         <include refid="selectCourseVo"/>
-        where id = #{id}
+        where course_id = #{courseById}
     </select>
 
-    <insert id="insertCourse" parameterType="com.ruoyi.fitness.domain.Course" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertCourse" parameterType="com.ruoyi.fitness.domain.Course" useGeneratedKeys="true" keyProperty="courseId">
         insert into course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="themeId != null">theme_id,</if>

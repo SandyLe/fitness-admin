@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseThemeMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.CourseTheme" id="CourseThemeResult">
+        <result property="id"    column="id"    />
+        <result property="themeName"    column="theme_name"    />
+        <result property="themeCode"    column="theme_code"    />
+        <result property="indications"    column="indications"    />
+        <result property="rehabilitationGoal"    column="rehabilitation_goal"    />
+        <result property="trainingFrequency"    column="training_frequency"    />
+        <result property="trainingAction"    column="training_action"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCourseThemeVo">
+        select id, theme_name, theme_code, indications, rehabilitation_goal, training_frequency, training_action, create_by, create_time, update_by, update_time from course_theme
+    </sql>
+
+    <select id="selectCourseThemeList" parameterType="com.ruoyi.fitness.domain.CourseTheme" resultMap="CourseThemeResult">
+        <include refid="selectCourseThemeVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="themeName != null "> and theme_name = #{themeName}</if>
+            <if test="themeCode != null "> and theme_code = #{themeCode}</if>
+            <if test="indications"> and indications = #{indications}</if>
+            <if test="rehabilitationGoal"> and rehabilitation_goal = #{rehabilitationGoal}</if>
+            <if test="trainingFrequency"> and training_frequency = #{trainingFrequency}</if>
+            <if test="trainingAction"> and training_action = #{trainingAction}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseThemeById" parameterType="Long" resultMap="CourseThemeResult">
+        <include refid="selectCourseThemeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCourseTheme" parameterType="com.ruoyi.fitness.domain.CourseTheme" useGeneratedKeys="true" keyProperty="id">
+        insert into course_theme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="themeName != null">theme_name,</if>
+            <if test="themeCode != null">theme_code,</if>
+            <if test="indications != null">indications,</if>
+            <if test="rehabilitationGoal != null">rehabilitation_goal,</if>
+            <if test="trainingFrequency != null">training_frequency,</if>
+            <if test="trainingAction != null">training_action,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="themeName != null">#{themeName},</if>
+            <if test="themeCode != null">#{themeCode},</if>
+            <if test="indications != null">#{indications},</if>
+            <if test="rehabilitationGoal != null">#{rehabilitationGoal},</if>
+            <if test="trainingFrequency != null">#{trainingFrequency},</if>
+            <if test="trainingAction != null">#{trainingAction},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourseTheme" parameterType="com.ruoyi.fitness.domain.CourseTheme">
+        update course_theme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id = #{id},</if>
+            <if test="themeName != null">theme_name = #{themeName},</if>
+            <if test="themeCode != null">theme_code = #{themeCode},</if>
+            <if test="indications != null">indications = #{indications},</if>
+            <if test="rehabilitationGoal != null">rehabilitation_goal = #{rehabilitationGoal},</if>
+            <if test="trainingFrequency != null">training_frequency = #{trainingFrequency},</if>
+            <if test="trainingAction != null">training_action = #{trainingAction},</if>
+            <if test="isDeleted != null">isDeleted = #{is_deleted},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCourseThemeById" parameterType="Long">
+        delete from course_theme where id = #{id}
+    </delete>
+
+    <delete id="deleteCourseThemeByIds" parameterType="String">
+        delete from course_theme where CourseTheme_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

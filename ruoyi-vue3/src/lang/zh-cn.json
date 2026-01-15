@@ -57,7 +57,9 @@
         "unlock": "解锁",
         "clean": "清空",
         "task": "任务",
-        "immediateExecution": "立即执行一次"
+        "immediateExecution": "立即执行一次",
+        "yes": "是",
+        "no": "否"
     },
     "home":{
         "index": "首页",
@@ -785,9 +787,18 @@
         "addAgent":"添加智能体",
         "agentDescriptionPlaceholder":"请输入智能体描述"
     },
-    "course":{
+    "course": {
         "name":"课程名称",
         "namePlaceholder": "请输入课程名称",
+        "themePlaceholder": "请选择课程主题",
+        "brifeIntroductionPlaceholder": "请输入课程简介",
+        "courseDescPlaceholder": "请输入课程详细介绍",
+        "codePlaceholder": "请输入课程编码",
+        "isShowIndexPlaceholder": "请确认是否在首页展示",
+        "levelPlaceholder": "请选择课程等级",
+        "courseActionPlaceholder": "请输入课程动作名称",
+        "groupsCountPlaceholder": "请输入课程动作组数",
+        "fitnessGoalPlaceholder": "请输入每组动作数量",
         "brifeIntroduction": "课程简介",
         "courseDesc": "课程明细",
         "duration": "课程时长",
@@ -797,7 +808,11 @@
         "courseAction": "课程动作",
         "groupsCount": "课程动作组数",
         "actionsCount": "每组动作数量",
-        "theme": "课程主题"
+        "theme": "课程主题",
+        "addCourse": "添加课程",
+        "imgUrl": "课程封面",
+        "videoUrl": "课程视频",
+        "viewCourse": "详情"
     }
  
 }

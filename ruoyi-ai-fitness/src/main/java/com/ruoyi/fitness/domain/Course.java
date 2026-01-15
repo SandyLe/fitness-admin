@@ -39,7 +39,7 @@ public class Course extends BaseEntity {
     private Long duration;
     /** 首页展示 */
     @Excel(name = "首页展示")
-    private Long isShowIndex;
+    private Boolean isShowIndex;
     /** 等级 */
     @Excel(name = "等级")
     private String level;
@@ -55,6 +55,9 @@ public class Course extends BaseEntity {
     /** 每组个数 */
     @Excel(name = "每组个数")
     private Integer actionsCount;
+    /** 状态 */
+    @Excel(name = "是否删除")
+    private Integer isDeleted;
 
     public Long getCourseId() {
         return courseId;
@@ -120,11 +123,11 @@ public class Course extends BaseEntity {
         this.duration = duration;
     }
 
-    public Long getIsShowIndex() {
+    public Boolean getIsShowIndex() {
         return isShowIndex;
     }
 
-    public void setIsShowIndex(Long isShowIndex) {
+    public void setIsShowIndex(Boolean isShowIndex) {
         this.isShowIndex = isShowIndex;
     }
 
@@ -166,5 +169,13 @@ public class Course extends BaseEntity {
 
     public void setActionsCount(Integer actionsCount) {
         this.actionsCount = actionsCount;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
