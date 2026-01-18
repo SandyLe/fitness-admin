@@ -3,10 +3,10 @@
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="88px">
       <el-form-item :label="$t('course.name')" prop="name">
         <el-input
-          v-model="queryParams.name"
-          :placeholder="$t('course.namePlaceholder')"
-          clearable
-          @keyup.enter="handleQuery"
+            v-model="queryParams.name"
+            :placeholder="$t('course.namePlaceholder')"
+            clearable
+            @keyup.enter="handleQuery"
         />
       </el-form-item>
       <el-form-item>
@@ -22,49 +22,49 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['fitness:course:add']"
+            type="primary"
+            plain
+            icon="Plus"
+            @click="handleAdd"
+            v-hasPermi="['fitness:course:add']"
         >{{ $t('common.add') }}</el-button>
       </el-col>
-<!--        <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          :disabled="single"
-          @click="handlePush"
-          v-hasPermi="['fitness:course:history']"
-        >{{ $t('course.history') }}</el-button>
-      </el-col>-->
+      <!--        <el-col :span="1.5">
+              <el-button
+                type="primary"
+                plain
+                :disabled="single"
+                @click="handlePush"
+                v-hasPermi="['fitness:course:history']"
+              >{{ $t('course.history') }}</el-button>
+            </el-col>-->
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['fitness:course:edit']"
+            type="success"
+            plain
+            icon="Edit"
+            :disabled="single"
+            @click="handleUpdate"
+            v-hasPermi="['fitness:course:edit']"
         >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['fitness:course:remove']"
+            type="danger"
+            plain
+            icon="Delete"
+            :disabled="multiple"
+            @click="handleDelete"
+            v-hasPermi="['fitness:course:remove']"
         >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['fitness:course:export']"
+            type="warning"
+            plain
+            icon="Download"
+            @click="handleExport"
+            v-hasPermi="['fitness:course:export']"
         >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -74,7 +74,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" align="center" prop="index" width="50"/>
       <el-table-column :label="$t('course.code')" align="center" prop="code" :show-overflow-tooltip="true"/>
-<!--      <el-table-column :label="$t('course.courseId')" align="center" prop="courseId" />-->
+      <!--      <el-table-column :label="$t('course.courseId')" align="center" prop="courseId" />-->
       <el-table-column :label="$t('course.name')" align="center" prop="name" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('course.theme')" align="center" prop="themeId" :show-overflow-tooltip="true">
         <template #default="scope">
@@ -86,11 +86,11 @@
           <div v-html="scope.row.brifeIntroduction.replace(/\n/g, '<br>')"></div>
         </template>
       </el-table-column>
-<!--      <el-table-column :label="$t('course.imgUrl')" align="center" prop="imgUrl" :show-overflow-tooltip="true">
-        <template #default="scope">
-          <img :src="scope.row.imgUrl" alt="" style="width:50px"/>
-        </template>
-      </el-table-column>-->
+      <!--      <el-table-column :label="$t('course.imgUrl')" align="center" prop="imgUrl" :show-overflow-tooltip="true">
+              <template #default="scope">
+                <img :src="scope.row.imgUrl" alt="" style="width:50px"/>
+              </template>
+            </el-table-column>-->
       <el-table-column :label="$t('course.duration')" align="center" prop="duration" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('course.level')" align="center" prop="level" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('course.courseAction')" align="center" prop="courseAction" :show-overflow-tooltip="true"/>
@@ -111,21 +111,37 @@
           <span>{{ parseTime(scope.row.updatedTime) }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('common.updatedTime')" align="center" prop="updateTime">
+        <template #default="scope">
+          <AuthImg
+              :src="baseApi + '/common/download/resource?resource=' + scope.row.imgUrl"
+              :token="headers.Authorization"
+              header-key="Authorization"
+              width="100"
+              height="100"
+              token-prefix=""
+          />
+
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['fitness:course:edit']">{{ $t('course.visitCourse') }}</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['fitness:course:edit']">{{ $t('common.edit') }}</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleActionIndicator(scope.row)" v-hasPermi="['fitness:course:actionIndicator']">{{ $t('course.actionIndicator') }}</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleActionComment(scope.row)" v-hasPermi="['fitness:course:actionComment']">{{ $t('course.actionComment') }}</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleActionPoints(scope.row)" v-hasPermi="['fitness:course:actionPoints']">{{ $t('course.actionPoints') }}</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['fitness:course:remove']">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
     />
 
     <!-- 添加或修改课程对话框 -->
@@ -165,6 +181,9 @@
         <el-form-item :label="$t('course.actionsCount')" prop="actionsCount">
           <el-input v-model="form.actionsCount" :placeholder="$t('course.fitnessGoalPlaceholder')" />
         </el-form-item>
+        <el-form-item :label="$t('course.duration')" prop="duration">
+          <el-input v-model="form.duration" :placeholder="$t('course.durationPlaceholder')" />
+        </el-form-item>
         <el-form-item :label="$t('course.imgUrl')" prop="imgUrl">
           <el-upload
               ref="imgUrlRef"
@@ -177,6 +196,15 @@
           >
             <el-button size="small" type="primary">{{ $t('common.import') }}</el-button>
           </el-upload>
+          <AuthImg
+              :src="baseApi + '/common/download/resource?resource=' + form.imgUrl"
+              :token="headers.Authorization"
+              header-key="Authorization"
+              width="20"
+              height="20"
+              fit="cover"
+              token-prefix=""
+          />
         </el-form-item>
         <el-form-item :label="$t('course.videoUrl')" prop="videoUrl">
           <el-input v-model="form.systemPrompt" type="hidden" :placeholder="$t('course.videoUrlPlaceholder')" />
@@ -191,20 +219,29 @@
           >
             <el-button size="small" type="primary">{{ $t('common.import') }}</el-button>
           </el-upload>
-
+          <AuthVideo
+              :src="baseApi + '/common/download/resource?resource=' + form.videoUrl"
+              :poster="baseApi + '/common/download/resource?resource=' + form.imgUrl"
+              :token="headers.Authorization"
+              width="240"
+              height="135"
+              autoplay
+              muted
+              loop
+          />
         </el-form-item>
-<!--        <el-form-item :label="$t('course.knowledgeBase')" prop="knowledgeBaseIds">
-          <el-select v-model="form.knowledgeBaseIds" multiple :placeholder="$t('course.knowledgeBasePlaceholder')">
-            <el-option v-for="item in knowbaseList" :key="item.id" :label="item.kbName" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        -->
-<!--        <el-form-item label="温度参数(0-1)" prop="temperature">-->
-<!--          <el-input v-model="form.temperature" placeholder="请输入温度参数(0-1)" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="最大token数" prop="maxTokens">-->
-<!--          <el-input v-model="form.maxTokens" placeholder="请输入最大token数" />-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item :label="$t('course.knowledgeBase')" prop="knowledgeBaseIds">
+                  <el-select v-model="form.knowledgeBaseIds" multiple :placeholder="$t('course.knowledgeBasePlaceholder')">
+                    <el-option v-for="item in knowbaseList" :key="item.id" :label="item.kbName" :value="item.id" />
+                  </el-select>
+                </el-form-item>
+                -->
+        <!--        <el-form-item label="温度参数(0-1)" prop="temperature">-->
+        <!--          <el-input v-model="form.temperature" placeholder="请输入温度参数(0-1)" />-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item label="最大token数" prop="maxTokens">-->
+        <!--          <el-input v-model="form.maxTokens" placeholder="请输入最大token数" />-->
+        <!--        </el-form-item>-->
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -214,7 +251,7 @@
       </template>
     </el-dialog>
 
-    <!-- 任务日志详细 -->
+    <!-- 课程详细 -->
     <el-dialog :title="title" v-model="openView" width="700px" append-to-body>
       <el-form :model="form" label-width="120px">
         <el-row>
@@ -253,6 +290,40 @@
         </div>
       </template>
     </el-dialog>
+    <!-- 课程动作标准 -->
+    <el-dialog :title="title" v-model="indicatorDialog" width="1024px" append-to-body>
+      <CrudTable
+          title="课课动作指标"
+          :columns="indicatorColumns"
+          :hidden-params="{ courseId }"
+          :list-request="listCourseTheme"
+          :add-request="addCourseIndicator"
+          :update-request="updateCourseIndicator"
+          :delete-request="deleteCourseIndicator"
+      />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="openView = false">{{ $t('common.close') }}</el-button>
+        </div>
+      </template>
+    </el-dialog>
+    <!-- 课程动作评估 -->
+    <el-dialog :title="title" v-model="commentDialog" width="1024px" append-to-body>
+      <CrudTable
+          title="课课动作评估"
+          :columns="indicatorColumns"
+          :hidden-params="{ courseId }"
+          :list-request="getCourseIndicators"
+          :add-request="addCourseIndicator"
+          :update-request="updateCourseIndicator"
+          :delete-request="deleteCourseIndicator"
+      />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="openView = false">{{ $t('common.close') }}</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -262,16 +333,24 @@ import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api
 import { listCourseTheme } from "@/api/fitness/courseTheme"
 import { listModel } from "@/api/ai/model"
 import { listKnowbase } from "@/api/ai/knowbase"
+import AuthImg from "@/components/AuthImg"
+import AuthVideo from "@/components/AuthVideo"
+import CrudTable from "@/components/CrudTable"
 
 const headers = ref({ Authorization: "Bearer " + getToken() })
 const router = useRouter()
 const { proxy } = getCurrentInstance()
+const baseApi = import.meta.env.VITE_APP_BASE_API
 
 const courseList = ref([])
+const list = ref([])
 const themeList = ref([])
 const levelList = [{"id":"初级","text":"初级"},{"id":"中级","text":"中级"},{"id":"高级","text":"高级"}]
 const open = ref(false)
 const openView = ref(false)
+const indicatorDialog = ref(false)
+const commentDialog = ref(false)
+const pointsDialog = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
 const ids = ref([])
@@ -280,6 +359,10 @@ const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
 const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的文件服务器地址
+
+const indicatorColumns = [{ label: '姓名', prop: 'themeName', editable: true },
+  { label: '年龄', prop: 'age', editable: true },
+  { label: '手机号', prop: 'phone' }]
 
 const data = reactive({
   form: {},
@@ -414,7 +497,7 @@ function handleSelectionChange(selection) {
 /** 新增按钮操作 */
 function handleAdd() {
   reset()
-  
+
   open.value = true
   title.value = proxy.$t('course.addCourse')
 }
@@ -469,6 +552,54 @@ function handleExport() {
     ...queryParams.value
   }, `course${new Date().getTime()}.xlsx`)
 }
+
+function handleActionIndicator(row) {
+  reset()
+  const _id = row.courseId || ids.value
+  getCourse(_id).then(response => {
+    form.value = response.data
+    indicatorDialog.value = true
+    title.value = proxy.$t('course.actionComment')
+  })
+}
+
+function handleActionComment(row) {
+  reset()
+  const _id = row.courseId || ids.value
+  getCourse(_id).then(response => {
+    form.value = response.data
+    commentDialog.value = true
+    title.value = proxy.$t('course.actionComment')
+  })
+}
+
+
+function handleActionPoints(row) {
+  reset()
+  const _id = row.courseId || ids.value
+  getCourse(_id).then(response => {
+    form.value = response.data
+    pointsDialog.value = true
+    title.value = proxy.$t('course.actionPoints')
+  })
+}
+
+function getCourseIndicators(params){
+  return listCourse(queryParams.value).then(response => {
+    list.value = response.rows
+  })
+}
+
+function addCourseIndicator(params){
+
+}
+function updateCourseIndicator(params){
+
+}
+function deleteCourseIndicator(params){
+
+}
+
 getCourseThemeList()
 getList();
 </script>
