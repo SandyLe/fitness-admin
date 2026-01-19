@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseActionPointsMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.CourseActionPoints" id="courseActionPointsResult">
+        <result property="actionPointsId"    column="action_points_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="actionPoints"    column="action_points"    />
+    </resultMap>
+
+    <sql id="selectCourseActionPointsVo">
+        select action_points_id, course_id, action_points from course_action_points
+    </sql>
+
+    <select id="selectCourseActionPointsList" parameterType="com.ruoyi.fitness.domain.CourseActionPoints" resultMap="courseActionPointsResult">
+        <include refid="selectCourseActionPointsVo"/>
+        <where>
+            <if test="actionPointsId != null "> and action_points_id = #{actionPointsId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="actionPoints != null "> and action_points = #{actionPoints}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseActionPointsById" parameterType="Long" resultMap="courseActionPointsResult">
+        <include refid="selectCourseActionPointsVo"/>
+        where action_points_id = #{actionPointsId}
+    </select>
+
+    <insert id="insertCourseActionPoints" parameterType="com.ruoyi.fitness.domain.CourseActionPoints" useGeneratedKeys="true" keyProperty="actionPointsId">
+        insert into course_action_points
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">course_id,</if>
+            <if test="actionPoints != null">action_points,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">#{courseId},</if>
+            <if test="actionPoints != null">#{actionPoints},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourseActionPoints" parameterType="com.ruoyi.fitness.domain.CourseActionPoints">
+        update course_action_points
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="actionPoints != null">action_points = #{actionPoints},</if>
+        </trim>
+        where action_points_id = #{actionPointsId}
+    </update>
+
+    <delete id="deleteCourseActionPointsById" parameterType="Long">
+        delete from course_action_points where action_points_id = #{actionPointsId}
+    </delete>
+
+    <delete id="deleteCourseActionPointsByIds" parameterType="String">
+        delete from course_action_points where action_points_id in
+        <foreach item="actionPointsId" collection="array" open="(" separator="," close=")">
+            #{actionPointsId}
+        </foreach>
+    </delete>
+</mapper>

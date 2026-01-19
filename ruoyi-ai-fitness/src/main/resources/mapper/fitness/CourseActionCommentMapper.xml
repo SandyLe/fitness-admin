@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseActionCommentMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.CourseActionComment" id="courseActionCommentResult">
+        <result property="actionCommentId"    column="action_comment_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="indicatorId"    column="indicator_id"    />
+        <result property="lessOrMore"    column="less_or_more"    />
+        <result property="standardValue"    column="standard_value"    />
+        <result property="actionCommentTitle"    column="action_comment_title"    />
+        <result property="actionCommentDesc"    column="action_comment_desc"    />
+        <result property="suggestions"    column="suggestions"    />
+    </resultMap>
+
+    <sql id="selectCourseActionCommentVo">
+        select action_comment_id, course_id, indicator_id, less_or_more, standard_value, action_comment_title, action_comment_desc, suggestions from course_action_comment
+    </sql>
+
+    <select id="selectCourseActionCommentList" parameterType="com.ruoyi.fitness.domain.CourseActionComment" resultMap="courseActionCommentResult">
+        <include refid="selectCourseActionCommentVo"/>
+        <where>
+            <if test="actionCommentId != null "> and action_comment_id = #{actionCommentId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="indicatorId != null "> and indicator_id = #{indicatorId}</if>
+            <if test="lessOrMore != null "> and less_or_more = #{lessOrMore}</if>
+            <if test="standardValue != null"> and standard_value = #{standardValue}</if>
+            <if test="actionCommentTitle != null "> and action_comment_title = #{actionCommentTitle}</if>
+            <if test="actionCommentDesc != null "> and action_comment_desc = #{actionCommentDesc}</if>
+            <if test="suggestions != null "> and suggestions = #{stansuggestionsdardValue}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseActionCommentById" parameterType="Long" resultMap="courseActionCommentResult">
+        <include refid="selectCourseActionCommentVo"/>
+        where action_comment_id = #{actionCommentId}
+    </select>
+
+    <insert id="insertCourseActionComment" parameterType="com.ruoyi.fitness.domain.CourseActionComment" useGeneratedKeys="true" keyProperty="actionCommentId">
+        insert into course_action_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="actionCommentId != null">action_comment_id,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="indicatorId != null">indicator_id,</if>
+            <if test="lessOrMore != null">less_or_more,</if>
+            <if test="standardValue != null">standard_value,</if>
+            <if test="actionCommentTitle != null">action_comment_title,</if>
+            <if test="actionCommentDesc != null">action_comment_desc,</if>
+            <if test="suggestions != null">suggestions,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="actionCommentId != null">#{actionCommentId},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="indicatorId != null">#{indicatorId},</if>
+            <if test="lessOrMore != null">#{lessOrMore},</if>
+            <if test="standardValue != null">#{standardValue},</if>
+            <if test="actionCommentTitle != null">#{actionCommentTitle},</if>
+            <if test="actionCommentDesc != null">#{actionCommentDesc},</if>
+            <if test="suggestions != null">#{suggestions},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourseActionComment" parameterType="com.ruoyi.fitness.domain.CourseActionComment">
+        update course_action_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="indicatorId != null">indicator_id = #{indicatorId},</if>
+            <if test="lessOrMore != null">less_or_more = #{lessOrMore},</if>
+            <if test="standardValue != null">standard_value = #{standardValue},</if>
+            <if test="actionCommentTitle != null">action_comment_title = #{actionCommentTitle},</if>
+            <if test="actionCommentDesc != null">action_comment_desc = #{actionCommentDesc},</if>
+            <if test="suggestions != null">suggestions = #{suggestions},</if>
+        </trim>
+        where action_comment_id = #{actionCommentId}
+    </update>
+
+    <delete id="deleteCourseActionCommentById" parameterType="Long">
+        delete from course_action_comment where action_comment_id = #{actionCommentId}
+    </delete>
+
+    <delete id="deleteCourseActionCommentByIds" parameterType="String">
+        delete from course_action_comment where action_comment_id in
+        <foreach item="actionCommentId" collection="array" open="(" separator="," close=")">
+            #{actionCommentId}
+        </foreach>
+    </delete>
+</mapper>

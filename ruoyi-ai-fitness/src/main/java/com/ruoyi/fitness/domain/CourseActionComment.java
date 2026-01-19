@@ -4,99 +4,99 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 课程主题
+ * 课程动作评价
  * @author lixt
  * @created
  */
-public class CourseActionComment extends BaseEntity {
+public class CourseActionComment {
     private static final long serialVersionUID = 1L;
 
-    /** 课程主题ID */
-    private Long id;
+    /** 课程动作评估ID */
+    private Long actionCommentId;
 
     /** 课程主题名称 */
-    @Excel(name = "课程主题名称")
-    private String themeName;
+    @Excel(name = "课程主键")
+    private Long courseId;
     /** 编码 */
-    @Excel(name = "编码")
-    private String themeCode;
+    @Excel(name = "动作指标")
+    private Long indicatorId;
     /** 适用病症 */
-    @Excel(name = "适用病症")
-    private String indications;
+    @Excel(name = "大于或小于指标")
+    private Long lessOrmore;
     /** 康复目标 */
-    @Excel(name = "康复目标")
-    private String rehabilitationGoal;
-    /** 训练运动频率 */
-    @Excel(name = "训练运动频率")
-    private String trainingFrequency;
-    /** 训练运动 */
-    @Excel(name = "训练运动")
-    private String trainingAction;
-    /** 状态 */
-    @Excel(name = "是否删除")
-    private Integer isDeleted;
+    @Excel(name = "指标值")
+    private String standardValue;
+    /** 动作指标评估名称 */
+    @Excel(name = "动作指标评估名称")
+    private String actionCommentTitle;
+    /** 动作指标评价 */
+    @Excel(name = "动作指标评价")
+    private String actionCommentDesc;
+    /** 动作指标建议 */
+    @Excel(name = "动作指标建议")
+    private String suggestions;
 
-    public Long getId() {
-        return id;
+    public Long getActionCommentId() {
+        return actionCommentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setActionCommentId(Long actionCommentId) {
+        this.actionCommentId = actionCommentId;
     }
 
-    public String getThemeName() {
-        return themeName;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setThemeName(String themeName) {
-        this.themeName = themeName;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
-    public String getThemeCode() {
-        return themeCode;
+    public Long getIndicatorId() {
+        return indicatorId;
     }
 
-    public void setThemeCode(String themeCode) {
-        this.themeCode = themeCode;
+    public void setIndicatorId(Long indicatorId) {
+        this.indicatorId = indicatorId;
     }
 
-    public String getIndications() {
-        return indications;
+    public Long getLessOrmore() {
+        return lessOrmore;
     }
 
-    public void setIndications(String indications) {
-        this.indications = indications;
+    public void setLessOrmore(Long lessOrmore) {
+        this.lessOrmore = lessOrmore;
     }
 
-    public String getRehabilitationGoal() {
-        return rehabilitationGoal;
+    public String getStandardValue() {
+        return standardValue;
     }
 
-    public void setRehabilitationGoal(String rehabilitationGoal) {
-        this.rehabilitationGoal = rehabilitationGoal;
+    public void setStandardValue(String standardValue) {
+        this.standardValue = standardValue;
     }
 
-    public String getTrainingFrequency() {
-        return trainingFrequency;
+    public String getActionCommentTitle() {
+        return actionCommentTitle;
     }
 
-    public void setTrainingFrequency(String trainingFrequency) {
-        this.trainingFrequency = trainingFrequency;
+    public void setActionCommentTitle(String actionCommentTitle) {
+        this.actionCommentTitle = actionCommentTitle;
     }
 
-    public String getTrainingAction() {
-        return trainingAction;
+    public String getActionCommentDesc() {
+        return actionCommentDesc;
     }
 
-    public void setTrainingAction(String trainingAction) {
-        this.trainingAction = trainingAction;
+    public void setActionCommentDesc(String actionCommentDesc) {
+        this.actionCommentDesc = actionCommentDesc;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public String getSuggestions() {
+        return suggestions;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setSuggestions(String suggestions) {
+        this.suggestions = suggestions;
     }
 }

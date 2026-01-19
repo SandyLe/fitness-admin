@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseActionIndicatorMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.CourseActionIndicator" id="courseActionIndicatorResult">
+        <result property="actionIndicatorId"    column="action_indicator_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="actionPoints"    column="action_points"    />
+        <result property="actionPointsCode"    column="action_points_code"    />
+        <result property="point1"    column="point1"    />
+        <result property="point2"    column="point2"    />
+        <result property="point3"    column="point3"    />
+        <result property="standardValue"    column="standard_value"    />
+        <result property="startValue"    column="start_value"    />
+        <result property="endValue"    column="end_value"    />
+    </resultMap>
+
+    <sql id="selectCourseActionIndicatorVo">
+        select action_indicator_id, course_id, action_points, action_points_code, point1, point2, point3, standard_value, start_value, end_value from course_action_indicator
+    </sql>
+
+    <select id="selectCourseActionIndicatorList" parameterType="com.ruoyi.fitness.domain.CourseActionIndicator" resultMap="courseActionIndicatorResult">
+        <include refid="selectCourseActionIndicatorVo"/>
+        <where>
+            <if test="actionIndicatorId != null "> and action_indicator_id = #{actionIndicatorId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="actionPoints != null "> and action_points = #{actionPoints}</if>
+            <if test="actionPointsCode != null  and actionPointsCode != ''"> and action_points_code = #{actionPointsCode}</if>
+            <if test="point1 != null"> and point1 = #{point1}</if>
+            <if test="point2 != null "> and point2 = #{point2}</if>
+            <if test="point3 != null "> and point3 = #{point3}</if>
+            <if test="standardValue != null "> and standard_value = #{standardValue}</if>
+            <if test="startValue != null "> and start_value = #{startValue}</if>
+            <if test="endValue != null "> and end_value = #{endValue}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseActionIndicatorById" parameterType="Long" resultMap="courseActionIndicatorResult">
+        <include refid="selectCourseActionIndicatorVo"/>
+        where action_indicator_id = #{actionIndicatorId}
+    </select>
+
+    <insert id="insertCourseActionIndicator" parameterType="com.ruoyi.fitness.domain.CourseActionIndicator" useGeneratedKeys="true" keyProperty="actionIndicatorId">
+        insert into course_action_indicator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">course_id,</if>
+            <if test="actionPoints != null">action_points,</if>
+            <if test="actionPointsCode != null">action_points_code,</if>
+            <if test="point1 != null">point1,</if>
+            <if test="point2 != null">point2,</if>
+            <if test="point3 != null">point3,</if>
+            <if test="standardValue != null">standard_value,</if>
+            <if test="startValue != null">start_value,</if>
+            <if test="endValue != null">end_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">#{courseId},</if>
+            <if test="actionPoints != null">#{actionPoints},</if>
+            <if test="actionPointsCode != null">#{actionPointsCode},</if>
+            <if test="point1 != null">#{point1},</if>
+            <if test="point2 != null">#{point2},</if>
+            <if test="point3 != null">#{point3},</if>
+            <if test="standardValue != null">#{standardValue},</if>
+            <if test="startValue != null">#{startValue},</if>
+            <if test="endValue != null">#{endValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourseActionIndicator" parameterType="com.ruoyi.fitness.domain.CourseActionIndicator">
+        update course_action_indicator
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="actionPoints != null">action_points = #{actionPoints},</if>
+            <if test="actionPointsCode != null">action_points_code = #{actionPointsCode},</if>
+            <if test="point1 != null">point1 = #{point1},</if>
+            <if test="point2 != null">point2 = #{point2},</if>
+            <if test="point3 != null">point3 = #{point3},</if>
+            <if test="standardValue != null">standard_value = #{standardValue},</if>
+            <if test="isShowIndex != null">is_show_index = #{isShowIndex},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="courseAction != null">course_action = #{courseAction},</if>
+            <if test="standardValue != null">standard_value = #{standardValue},</if>
+            <if test="startValue != null">start_value = #{startValue},</if>
+            <if test="endValue != null">end_value = #{endValue},</if>
+        </trim>
+        where action_indicator_id = #{actionIndicatorId}
+    </update>
+
+    <delete id="deleteCourseActionIndicatorById" parameterType="Long">
+        delete from course_action_indicator where action_indicator_id = #{actionIndicatorId}
+    </delete>
+
+    <delete id="deleteCourseActionIndicatorByIds" parameterType="String">
+        delete from course_action_indicator where action_indicator_id in
+        <foreach item="actionIndicatorId" collection="array" open="(" separator="," close=")">
+            #{actionIndicatorId}
+        </foreach>
+    </delete>
+</mapper>
