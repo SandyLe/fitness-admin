@@ -294,12 +294,14 @@
     <el-dialog :title="title" v-model="indicatorDialog" width="1024px" append-to-body>
       <CrudTable
           title="课课动作指标"
+          ref="indicatorRef"
           :columns="indicatorColumns"
           :hidden-params="{ courseId }"
-          :list-request="listCourseTheme"
-          :add-request="addCourseIndicator"
-          :update-request="updateCourseIndicator"
-          :delete-request="deleteCourseIndicator"
+          row-key = "actionIndicatorId"
+          :list-request="listCourseActionIndicator"
+          :add-request="addCourseActionIndicator"
+          :update-request="updateCourseActionIndicator"
+          :delete-request="delCourseActionIndicator"
       />
       <template #footer>
         <div class="dialog-footer">
@@ -314,9 +316,9 @@
           :columns="indicatorColumns"
           :hidden-params="{ courseId }"
           :list-request="getCourseIndicators"
-          :add-request="addCourseIndicator"
-          :update-request="updateCourseIndicator"
-          :delete-request="deleteCourseIndicator"
+          :add-request="addCourseActionIndicator"
+          :update-request="updateCourseActionIndicator"
+          :delete-request="delCourseActionIndicator"
       />
       <template #footer>
         <div class="dialog-footer">
@@ -329,10 +331,8 @@
 
 <script setup name="course">
 import { getToken } from "@/utils/auth"
-import { listCourse, getCourse, delCourse, addCourse, updateCourse } from "@/api/fitness/course"
+import { listCourse, getCourse, delCourse, addCourse, updateCourse, listCourseActionIndicator, addCourseActionIndicator, updateCourseActionIndicator, delCourseActionIndicator, getCourseActionIndicator } from "@/api/fitness/course"
 import { listCourseTheme } from "@/api/fitness/courseTheme"
-import { listModel } from "@/api/ai/model"
-import { listKnowbase } from "@/api/ai/knowbase"
 import AuthImg from "@/components/AuthImg"
 import AuthVideo from "@/components/AuthVideo"
 import CrudTable from "@/components/CrudTable"
@@ -359,10 +359,17 @@ const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
 const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的文件服务器地址
+const courseId = ref("")
+const indicatorRef = ref(null)
 
-const indicatorColumns = [{ label: '姓名', prop: 'themeName', editable: true },
-  { label: '年龄', prop: 'age', editable: true },
-  { label: '手机号', prop: 'phone' }]
+const indicatorColumns = [{ label: '动作指标名称', prop: 'actionPoints', editable: true },
+  { label: '动作指标编码', prop: 'actionPointsCode', editable: true },
+  { label: '点位1', prop: 'point1', editable: true },
+  { label: '点位2', prop: 'point2', editable: true },
+  { label: '点位3', prop: 'point3', editable: true },
+  { label: '标准值', prop: 'standardValue', editable: true },
+  { label: '开始值', prop: 'startValue', editable: true },
+  { label: '结束值', prop: 'endValue', editable: true }]
 
 const data = reactive({
   form: {},
@@ -392,8 +399,6 @@ const data = reactive({
     // ]
   }
 })
-const modelList = ref([])
-const knowbaseList = ref([])
 const { queryParams, form, rules } = toRefs(data)
 
 /** 查看详情 */
@@ -556,10 +561,12 @@ function handleExport() {
 function handleActionIndicator(row) {
   reset()
   const _id = row.courseId || ids.value
+  courseId.value = _id
   getCourse(_id).then(response => {
     form.value = response.data
     indicatorDialog.value = true
     title.value = proxy.$t('course.actionComment')
+    indicatorRef.value?.reload()
   })
 }
 
@@ -594,7 +601,7 @@ function addCourseIndicator(params){
 
 }
 function updateCourseIndicator(params){
-
+    console.log("i99999999999999")
 }
 function deleteCourseIndicator(params){
 

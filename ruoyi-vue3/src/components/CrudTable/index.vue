@@ -1,8 +1,9 @@
 <template>
   <div class="excel-crud">
-    <h3>{{ title }}</h3>
-
-    <button @click="addRow">新增</button>
+    <div class="header">
+      <h3>{{ title }}</h3>
+      <button class="btn primary" @click="startAdd">新增</button>
+    </div>
 
     <table>
       <thead>
@@ -10,51 +11,34 @@
         <th v-for="col in columns" :key="col.prop">
           {{ col.label }}
         </th>
-        <th>操作</th>
+        <th width="120">操作</th>
       </tr>
       </thead>
 
       <tbody>
       <!-- 新增行 -->
-      <tr
-          v-if="adding"
-          class="editing new-row"
-      >
-        <td
-            v-for="col in columns"
-            :key="col.prop"
-            @click="startAddCell(col)"
-        >
-          <input
-              v-model="newRow[col.prop]"
-              @keydown.enter.prevent="saveNewRow"
-              @keydown.esc.prevent="cancelAdd"
-              autofocus
-          />
+      <tr v-if="adding" class="adding-row">
+        <td v-for="col in columns" :key="col.prop">
+          <input v-model="newRow[col.prop]" />
         </td>
         <td>
-          <button @click="saveNewRow">保存</button>
-          <button @click="cancelAdd">取消</button>
+          <button class="btn success" @click="saveNew">保存</button>
+          <button class="btn" @click="cancelAdd">取消</button>
         </td>
       </tr>
 
-      <!-- 已有行 -->
-      <tr
-          v-for="row in list"
-          :key="row[rowKey]"
-          :class="{ editing: editingRowKey === row[rowKey] }"
-      >
+      <!-- 数据行 -->
+      <tr v-for="row in list" :key="row[rowKey]">
         <td
             v-for="col in columns"
             :key="col.prop"
-            @click="startCellEdit(row, col)"
+            @click="startEdit(row, col)"
         >
           <template v-if="isEditingCell(row, col)">
             <input
-                v-model="editRow[col.prop]"
-                @keydown.enter.prevent="saveEditRow"
+                v-model="editingValue"
                 @keydown.esc.prevent="cancelEdit"
-                @blur="autoSave && saveEditRow()"
+                @blur="onBlurEdit"
                 autofocus
             />
           </template>
@@ -64,7 +48,8 @@
         </td>
 
         <td>
-          <button @click="remove(row)">删除</button>
+          <button class="btn success" @click="saveEdit(row)">保存</button>
+          <button class="btn danger" @click="remove(row)">删除</button>
         </td>
       </tr>
       </tbody>
@@ -78,61 +63,77 @@ import { ref, onMounted } from 'vue'
 /* ================= Props ================= */
 const props = defineProps({
   title: String,
-  columns: { type: Array, required: true },
-  rowKey: { type: String, default: 'id' },
 
-  listRequest: { type: Function, required: true },
-  addRequest: { type: Function, required: true },
-  updateRequest: { type: Function, required: true },
+  columns: {
+    type: Array,
+    required: true
+  },
+
+  rowKey: {
+    type: String,
+    default: 'id'
+  },
+
+  listRequest: {
+    type: Function,
+    required: true
+  },
+  addRequest: {
+    type: Function,
+    required: true
+  },
+  updateRequest: {
+    type: Function,
+    required: true
+  },
   deleteRequest: Function,
 
   hiddenParams: {
     type: Object,
     default: () => ({})
-  },
-
-  autoSave: {
-    type: Boolean,
-    default: true
   }
 })
 
-/* ================= State ================= */
+/* ================= Data ================= */
 const list = ref([])
 
-/* 编辑已有行 */
-const editingRowKey = ref(null)
-const editingColProp = ref(null)
-const editRow = ref({})
-
-/* 新增行 */
+/* 新增 */
 const adding = ref(false)
 const newRow = ref({})
 
-/* ================= List ================= */
+/* 编辑（只允许一个单元格） */
+const editingCell = ref({
+  rowKey: null,
+  colProp: null
+})
+const editingValue = ref('')
+// ⭐ 编辑缓存：key = rowKey
+const editCache = ref({})
+const resetState = () => {
+  list.value = []
+  adding.value = false
+  newRow.value = {}
+  cancelEdit()
+}
+/* ================= Methods ================= */
 const fetchList = async () => {
-  const res = await props.listRequest({
-    ...props.hiddenParams
-  })
+  resetState()
+  const res = await props.listRequest({ ...props.hiddenParams })
   list.value = res?.rows?.rows || res?.rows || []
 }
 
-/* ================= 新增 ================= */
-const addRow = () => {
+/* ===== 新增 ===== */
+const startAdd = () => {
   adding.value = true
   newRow.value = {}
 }
 
-const saveNewRow = async () => {
-  if (!adding.value) return
-
+const saveNew = async () => {
   await props.addRequest({
     ...newRow.value,
     ...props.hiddenParams
   })
-
   adding.value = false
-  newRow.value = {}
   fetchList()
 }
 
@@ -141,24 +142,55 @@ const cancelAdd = () => {
   newRow.value = {}
 }
 
-/* ================= 编辑 ================= */
-const startCellEdit = (row, col) => {
-  if (!col.editable || adding.value) return
+/* ===== 编辑 ===== */
+const startEdit = (row, col) => {
+  if (!col.editable) return
+  const key = row[props.rowKey]
+  editingCell.value = {
+    rowKey: key,
+    colProp: col.prop
+  }
 
-  editingRowKey.value = row[props.rowKey]
-  editingColProp.value = col.prop
-  editRow.value = { ...row }
+  // 初始化该行缓存
+  if (!editCache.value[key]) {
+    editCache.value[key] = { ...row }
+  }
+
+  // 输入框显示缓存中的值（或原值）
+  editingValue.value = editCache.value[key][col.prop]
+}
+const onBlurEdit = () => {
+  const { rowKey, colProp } = editingCell.value
+  if (!rowKey || !colProp) return
+
+  // ⭐ 写入编辑缓存
+  editCache.value[rowKey][colProp] = editingValue.value
+  // 2️⃣ 同步更新显示值（关键）
+  const row = list.value.find(
+      item => item[props.rowKey] === rowKey
+  )
+  if (row) {
+    row[colProp] = editingValue.value
+  }
+}
+const isEditingRow = (row) => {
+  return editingCell.value.rowKey === row[props.rowKey]
 }
 
-const isEditingCell = (row, col) =>
-    editingRowKey.value === row[props.rowKey] &&
-    editingColProp.value === col.prop
+const isEditingCell = (row, col) => {
+  return (
+      editingCell.value.rowKey === row[props.rowKey] &&
+      editingCell.value.colProp === col.prop
+  )
+}
 
-const saveEditRow = async () => {
-  if (!editingRowKey.value) return
+const saveEdit = async (row, col) => {
+  const key = row[props.rowKey]
+  const cache = editCache.value[key]
+  if (!cache) return
 
   await props.updateRequest({
-    ...editRow.value,
+    ...cache,
     ...props.hiddenParams
   })
 
@@ -167,15 +199,14 @@ const saveEditRow = async () => {
 }
 
 const cancelEdit = () => {
-  editingRowKey.value = null
-  editingColProp.value = null
-  editRow.value = {}
+  editingCell.value = { rowKey: null, colProp: null }
+  editingValue.value = ''
+  delete editCache.value[props.rowKey]
 }
 
-/* ================= 删除 ================= */
+/* ===== 删除 ===== */
 const remove = async (row) => {
   if (!confirm('确认删除？')) return
-  if (!props.deleteRequest) return
 
   await props.deleteRequest({
     [props.rowKey]: row[props.rowKey],
@@ -186,53 +217,70 @@ const remove = async (row) => {
 }
 
 onMounted(fetchList)
+defineExpose({
+  reload: fetchList
+})
+
 </script>
 
 <style scoped>
-.excel-crud table {
+.excel-crud {
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+table {
   width: 100%;
   border-collapse: collapse;
 }
-.excel-crud th,
-.excel-crud td {
+
+th,
+td {
   border: 1px solid #ddd;
   padding: 6px;
-  min-width: 80px;
 }
 
-.excel-crud tr.editing {
-  background: #f0f8ff;
+td {
+  cursor: pointer;
 }
 
-.excel-crud tr.new-row {
-  background: #f6ffed;
-}
-
-.excel-crud input {
+input {
   width: 100%;
   border: none;
   outline: none;
   padding: 4px;
 }
-.excel-crud button {
-  background-color: #e6f4ff;
-  color: #1677ff;
-  border: 1px solid #91caff;
+
+/* ===== Buttons ===== */
+.btn {
   padding: 4px 10px;
-  border-radius: 4px;
+  border: none;
+  background: #e6f2ff;
+  color: #1677ff;
   cursor: pointer;
-  font-size: 13px;
-  margin-right: 6px;
-  transition: all 0.2s;
+  margin-right: 4px;
 }
 
-.excel-crud button:hover {
-  background-color: #bae0ff;
-  border-color: #69b1ff;
+.btn.primary {
+  background: #e6f2ff;
 }
 
-.excel-crud button:active {
-  background-color: #91caff;
+.btn.success {
+  background: #f6ffed;
+  color: #52c41a;
 }
 
+.btn.danger {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.adding-row {
+  background: #f0f8ff;
+}
 </style>

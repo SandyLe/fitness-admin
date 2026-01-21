@@ -1,8 +1,8 @@
 package com.ruoyi.fitness.service.impl;
 
-import com.ruoyi.fitness.domain.CourseActionComment;
-import com.ruoyi.fitness.mapper.CourseActionCommentMapper;
-import com.ruoyi.fitness.service.ICourseActionCommentService;
+import com.ruoyi.fitness.domain.CourseActionPoints;
+import com.ruoyi.fitness.mapper.CourseActionPointsMapper;
+import com.ruoyi.fitness.service.ICourseActionPointsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,43 +14,43 @@ import java.util.List;
  * @date 2026-01-04
  */
 @Service
-public class CourseActionPointsServiceImpl implements ICourseActionCommentService {
+public class CourseActionPointsServiceImpl implements ICourseActionPointsService {
 
     @Autowired
-    private CourseActionCommentMapper courseActionCommentMapper;
+    private CourseActionPointsMapper courseActionPointsMapper;
 
     @Override
-    public CourseActionComment selectCourseActionCommentById(Long id) {
-        return courseActionCommentMapper.selectCourseActionCommentById(id);
+    public CourseActionPoints selectCourseActionPointsById(Long id) {
+        return courseActionPointsMapper.selectCourseActionPointsById(id);
     }
 
     @Override
-    public List<CourseActionComment> selectCourseActionCommentList(CourseActionComment courseActionComment) {
-        return courseActionCommentMapper.selectCourseActionCommentList(courseActionComment);
+    public List<CourseActionPoints> selectCourseActionPointsList(CourseActionPoints courseActionPoints) {
+        return courseActionPointsMapper.selectCourseActionPointsList(courseActionPoints);
     }
 
     @Override
-    public int insertCourseActionComment(CourseActionComment courseActionComment) {
-        return courseActionCommentMapper.insertCourseActionComment(courseActionComment);
+    public int insertCourseActionPoints(CourseActionPoints courseActionPoints) {
+        return courseActionPointsMapper.insertCourseActionPoints(courseActionPoints);
     }
 
     @Override
-    public int updateCourseActionComment(CourseActionComment courseActionComment) {
-        return courseActionCommentMapper.updateCourseActionComment(courseActionComment);
+    public int updateCourseActionPoints(CourseActionPoints courseActionPoints) {
+        return courseActionPointsMapper.updateCourseActionPoints(courseActionPoints);
     }
 
     @Override
-    public int deleteCourseActionCommentByIds(Long[] ids) {
-        return courseActionCommentMapper.deleteCourseActionCommentByIds(ids);
+    public int deleteCourseActionPointsByIds(Long[] ids) {
+        return courseActionPointsMapper.deleteCourseActionPointsByIds(ids);
     }
 
     @Override
-    public int deleteCourseActionCommentById(Long id) {
-        return courseActionCommentMapper.deleteCourseActionCommentById(id);
+    public int deleteCourseActionPointsById(Long id) {
+        return courseActionPointsMapper.deleteCourseActionPointsById(id);
     }
 
     @Override
-    public int deleteCourseActionComment(Long[] ids) {
-        return courseActionCommentMapper.deleteCourseActionCommentByIds(ids);
+    public int deleteCourseActionPoints(Long[] ids) {
+        return courseActionPointsMapper.deleteCourseActionPointsByIds(ids);
     }
 }

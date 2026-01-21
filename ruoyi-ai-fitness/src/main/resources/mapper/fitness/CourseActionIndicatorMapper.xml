@@ -78,11 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="point2 != null">point2 = #{point2},</if>
             <if test="point3 != null">point3 = #{point3},</if>
             <if test="standardValue != null">standard_value = #{standardValue},</if>
-            <if test="isShowIndex != null">is_show_index = #{isShowIndex},</if>
-            <if test="level != null">level = #{level},</if>
-            <if test="code != null">code = #{code},</if>
-            <if test="courseAction != null">course_action = #{courseAction},</if>
-            <if test="standardValue != null">standard_value = #{standardValue},</if>
             <if test="startValue != null">start_value = #{startValue},</if>
             <if test="endValue != null">end_value = #{endValue},</if>
         </trim>
