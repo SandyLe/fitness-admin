@@ -305,7 +305,7 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openView = false">{{ $t('common.close') }}</el-button>
+          <el-button @click="indicatorDialog = false">{{ $t('common.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -313,16 +313,37 @@
     <el-dialog :title="title" v-model="commentDialog" width="1024px" append-to-body>
       <CrudTable
           title="课课动作评估"
-          :columns="indicatorColumns"
+          ref="commentRef"
+          :columns="commentColumns"
           :hidden-params="{ courseId }"
-          :list-request="getCourseIndicators"
-          :add-request="addCourseActionIndicator"
-          :update-request="updateCourseActionIndicator"
-          :delete-request="delCourseActionIndicator"
+          row-key = "actionCommentId"
+          :list-request="listCourseActionComment"
+          :add-request="addCourseActionComment"
+          :update-request="updateCourseActionComment"
+          :delete-request="delCourseActionComment"
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openView = false">{{ $t('common.close') }}</el-button>
+          <el-button @click="commentDialog = false">{{ $t('common.close') }}</el-button>
+        </div>
+      </template>
+    </el-dialog>
+    <!-- 课程动作要点 -->
+    <el-dialog :title="title" v-model="pointDialog" width="1024px" append-to-body>
+      <CrudTable
+          title="课课动作要点"
+          ref="pointRef"
+          :columns="pointColumns"
+          :hidden-params="{ courseId }"
+          row-key = "actionPointsId"
+          :list-request="listCourseActionPoints"
+          :add-request="addCourseActionPoints"
+          :update-request="updateCourseActionPoints"
+          :delete-request="delCourseActionPoints"
+      />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="pointDialog = false">{{ $t('common.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -331,7 +352,28 @@
 
 <script setup name="course">
 import { getToken } from "@/utils/auth"
-import { listCourse, getCourse, delCourse, addCourse, updateCourse, listCourseActionIndicator, addCourseActionIndicator, updateCourseActionIndicator, delCourseActionIndicator, getCourseActionIndicator } from "@/api/fitness/course"
+import {
+  listCourse,
+  getCourse,
+  delCourse,
+  addCourse,
+  updateCourse,
+  listCourseActionIndicator,
+  addCourseActionIndicator,
+  updateCourseActionIndicator,
+  delCourseActionIndicator,
+  getCourseActionIndicator,
+  getCourseActionComment,
+  listCourseActionComment,
+  addCourseActionComment,
+  updateCourseActionComment,
+  delCourseActionComment,
+  getCourseActionPoints,
+  listCourseActionPoints,
+  addCourseActionPoints,
+  updateCourseActionPoints,
+  delCourseActionPoints
+} from "@/api/fitness/course"
 import { listCourseTheme } from "@/api/fitness/courseTheme"
 import AuthImg from "@/components/AuthImg"
 import AuthVideo from "@/components/AuthVideo"
@@ -350,7 +392,7 @@ const open = ref(false)
 const openView = ref(false)
 const indicatorDialog = ref(false)
 const commentDialog = ref(false)
-const pointsDialog = ref(false)
+const pointDialog = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
 const ids = ref([])
@@ -361,6 +403,8 @@ const title = ref("")
 const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的文件服务器地址
 const courseId = ref("")
 const indicatorRef = ref(null)
+const commentRef = ref(null)
+const pointRef = ref(null)
 
 const indicatorColumns = [{ label: '动作指标名称', prop: 'actionPoints', editable: true },
   { label: '动作指标编码', prop: 'actionPointsCode', editable: true },
@@ -370,7 +414,17 @@ const indicatorColumns = [{ label: '动作指标名称', prop: 'actionPoints', e
   { label: '标准值', prop: 'standardValue', editable: true },
   { label: '开始值', prop: 'startValue', editable: true },
   { label: '结束值', prop: 'endValue', editable: true }]
-
+const commentColumns = [{ label: '动作指标', prop: 'indicatorId', editable: true, editor: 'select',
+  optionsRequest: listCourseActionIndicator, optionsFormatter: (item) => ({
+    label: item.actionPoints,
+    value: item.actionIndicatorId
+  })},
+  { label: '大于或小于指标', prop: 'lessOrMore', editable: true },
+  { label: '指标值', prop: 'standardValue', editable: true },
+  { label: '动作指标评估名称', prop: 'actionCommentTitle', editable: true },
+  { label: '动作指标评价', prop: 'actionCommentDesc', editable: true },
+  { label: '动作指标建议', prop: 'suggestions', editable: true }]
+const pointColumns = [{ label: '动作要点', prop: 'actionPoints', editable: true }]
 const data = reactive({
   form: {},
   queryParams: {
@@ -565,7 +619,7 @@ function handleActionIndicator(row) {
   getCourse(_id).then(response => {
     form.value = response.data
     indicatorDialog.value = true
-    title.value = proxy.$t('course.actionComment')
+    title.value = proxy.$t('course.actionIndicator')
     indicatorRef.value?.reload()
   })
 }
@@ -573,10 +627,12 @@ function handleActionIndicator(row) {
 function handleActionComment(row) {
   reset()
   const _id = row.courseId || ids.value
+  courseId.value = _id
   getCourse(_id).then(response => {
     form.value = response.data
     commentDialog.value = true
     title.value = proxy.$t('course.actionComment')
+    commentRef.value?.reload()
   })
 }
 
@@ -584,10 +640,12 @@ function handleActionComment(row) {
 function handleActionPoints(row) {
   reset()
   const _id = row.courseId || ids.value
+  courseId.value = _id
   getCourse(_id).then(response => {
     form.value = response.data
-    pointsDialog.value = true
+    pointDialog.value = true
     title.value = proxy.$t('course.actionPoints')
+    pointRef.value?.reload()
   })
 }
 

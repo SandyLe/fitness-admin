@@ -22,7 +22,7 @@ public class CourseActionComment {
     private Long indicatorId;
     /** 适用病症 */
     @Excel(name = "大于或小于指标")
-    private Long lessOrmore;
+    private Long lessOrMore;
     /** 康复目标 */
     @Excel(name = "指标值")
     private String standardValue;
@@ -60,12 +60,12 @@ public class CourseActionComment {
         this.indicatorId = indicatorId;
     }
 
-    public Long getLessOrmore() {
-        return lessOrmore;
+    public Long getLessOrMore() {
+        return lessOrMore;
     }
 
-    public void setLessOrmore(Long lessOrmore) {
-        this.lessOrmore = lessOrmore;
+    public void setLessOrMore(Long lessOrMore) {
+        this.lessOrMore = lessOrMore;
     }
 
     public String getStandardValue() {

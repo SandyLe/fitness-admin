@@ -19,7 +19,21 @@
       <!-- 新增行 -->
       <tr v-if="adding" class="adding-row">
         <td v-for="col in columns" :key="col.prop">
-          <input v-model="newRow[col.prop]" />
+          <input v-if="!col.editor || col.editor === 'input'" v-model="editingValue" />
+          <select
+              v-else-if="col.editor === 'select'"
+              v-model="editingValue"
+              @change="onSelectChange"
+              @blur="onBlurEdit"
+          >
+            <option
+                v-for="opt in optionsMap[col.prop] || []"
+                :key="opt.value"
+                :value="opt.value"
+            >
+              {{ opt.label }}
+            </option>
+          </select>
         </td>
         <td>
           <button class="btn success" @click="saveNew">保存</button>
@@ -36,14 +50,30 @@
         >
           <template v-if="isEditingCell(row, col)">
             <input
+                v-if="!col.editor || col.editor === 'input'"
                 v-model="editingValue"
                 @keydown.esc.prevent="cancelEdit"
                 @blur="onBlurEdit"
                 autofocus
             />
+            <select
+                v-else-if="col.editor === 'select'"
+                v-model="editingValue"
+                @change="onSelectChange"
+                @blur="onBlurEdit"
+            >
+              <option
+                  v-for="opt in optionsMap[col.prop] || []"
+                  :key="opt.value"
+                  :value="opt.value"
+              >
+                {{ opt.label }}
+              </option>
+            </select>
+
           </template>
           <template v-else>
-            {{ row[col.prop] }}
+            {{ renderCell(row, col) }}
           </template>
         </td>
 
@@ -59,6 +89,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import {isExternal} from "@/utils/validate.js";
 
 /* ================= Props ================= */
 const props = defineProps({
@@ -118,6 +149,7 @@ const resetState = () => {
 /* ================= Methods ================= */
 const fetchList = async () => {
   resetState()
+  fetchColumns()
   const res = await props.listRequest({ ...props.hiddenParams })
   list.value = res?.rows?.rows || res?.rows || []
 }
@@ -143,22 +175,47 @@ const cancelAdd = () => {
 }
 
 /* ===== 编辑 ===== */
-const startEdit = (row, col) => {
+const startEdit = async (row, col) => {
   if (!col.editable) return
+
   const key = row[props.rowKey]
+
   editingCell.value = {
     rowKey: key,
     colProp: col.prop
   }
 
-  // 初始化该行缓存
+  // 初始化行缓存
   if (!editCache.value[key]) {
     editCache.value[key] = { ...row }
   }
 
-  // 输入框显示缓存中的值（或原值）
   editingValue.value = editCache.value[key][col.prop]
+
+  // ⭐ 如果是下拉框 & 还没加载过选项
+  /*if (
+      col.editor === 'select' &&
+      col.optionsRequest &&
+      !optionsMap.value[col.prop]
+  ) {
+    const res = await col.optionsRequest()
+
+    const raw = res?.rows?.rows || res?.rows || []
+
+    // ⭐ 如果有格式化函数，就转换
+    if (col.optionsFormatter) {
+      optionsMap.value[col.prop] = raw.map(col.optionsFormatter)
+    } else {
+      // 默认兜底：尝试常见字段名
+      optionsMap.value[col.prop] = raw.map(item => ({
+        label: item.label ?? item.name ?? item.dictName,
+        value: item.value ?? item.id ?? item.dictCode
+      }))
+    }
+  }*/
+
 }
+
 const onBlurEdit = () => {
   const { rowKey, colProp } = editingCell.value
   if (!rowKey || !colProp) return
@@ -207,16 +264,71 @@ const cancelEdit = () => {
 /* ===== 删除 ===== */
 const remove = async (row) => {
   if (!confirm('确认删除？')) return
-
-  await props.deleteRequest({
+  debugger
+  /*await props.deleteRequest({
     [props.rowKey]: row[props.rowKey],
     ...props.hiddenParams
-  })
-
+  })*/
+  await props.deleteRequest(row[props.rowKey])
   fetchList()
 }
+const renderCell = (row, col) => {
+  if (
+      col.editor === 'select' &&
+      optionsMap.value[col.prop]
+  ) {
+    const opt = optionsMap.value[col.prop].find(
+        o => o.value === row[col.prop]
+    )
+    return opt ? opt.label : row[col.prop]
+  }
+  return row[col.prop]
+}
 
-onMounted(fetchList)
+const onSelectChange = () => {
+  onBlurEdit()
+}
+const optionsMap = ref({})
+const resetColumn = () => {
+  optionsMap.value =[]
+}
+
+const fetchColumns = async () => {
+  resetColumn()
+  props.columns.forEach(col => {
+    if (
+        col.editor === 'select' &&
+        col.optionsRequest &&
+        !optionsMap.value[col.prop]
+    ) {
+      try {
+        const res = col.optionsRequest({ ...props.hiddenParams }).then(res=>{
+
+          const raw = res?.rows?.rows || res?.rows || []
+
+          // ⭐ 如果有格式化函数，就转换
+          if (col.optionsFormatter) {
+            optionsMap.value[col.prop] = raw.map(col.optionsFormatter)
+          } else {
+            // 默认兜底：尝试常见字段名
+            optionsMap.value[col.prop] = raw.map(item => ({
+              label: item.label ?? item.name ?? item.dictName,
+              value: item.value ?? item.id ?? item.dictCode
+            }))
+          }
+        })
+
+
+      }catch (e) {
+        console.log(e)
+      }
+    }
+  })
+}
+onMounted( ()=>{
+  fetchList()
+  fetchColumns()
+})
 defineExpose({
   reload: fetchList
 })
