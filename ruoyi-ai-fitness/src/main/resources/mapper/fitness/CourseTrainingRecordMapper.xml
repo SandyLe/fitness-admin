@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.CourseTrainingRecordMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.CourseTrainingRecord" id="courseTrainingRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="actionPointsCode"    column="action_points_code"    />
+        <result property="actionPointsValue"    column="action_points_value"    />
+        <result property="groupsNum"    column="groups_num"    />
+        <result property="actionsNum"    column="actions_num"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="batchNo"    column="batch_no"    />
+    </resultMap>
+
+    <sql id="selectCourseTrainingRecordVo">
+        select record_id, course_id, user_id, action_points_code, action_points_value, groups_num, actions_num, start_time, end_time, batch_no from course_training_record
+    </sql>
+
+    <select id="selectCourseTrainingRecordList" parameterType="com.ruoyi.fitness.domain.CourseTrainingRecord" resultMap="courseTrainingRecordResult">
+        <include refid="selectCourseTrainingRecordVo"/>
+        <where>
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="courseId != null "> and course_id = #{courseId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="actionPointsCode != null "> and action_points_code = #{actionPointsCode}</if>
+            <if test="actionPointsValue != null "> and action_points_value = #{actionPointsValue}</if>
+            <if test="groupsNum != null"> and groups_num = #{groupsNum}</if>
+            <if test="actionsNum != null "> and actions_num = #{actionsNum}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="batchNo != null "> and batch_no = #{batchNo}</if>
+        </where>
+    </select>
+
+    <select id="selectCourseTrainingRecordById" parameterType="Long" resultMap="courseTrainingRecordResult">
+        <include refid="selectCourseTrainingRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+
+    <insert id="insertCourseTrainingRecord" parameterType="com.ruoyi.fitness.domain.CourseTrainingRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into course_training_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">record_id,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="actionPointsCode != null">action_points_code,</if>
+            <if test="actionPointsValue != null">action_points_value,</if>
+            <if test="groupsNum != null">groups_num,</if>
+            <if test="actionsNum != null">actions_num,</if>
+            <if test="startTime != null">startTime,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="batchNo != null">batch_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">#{recordId},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="actionPointsCode != null">#{actionPointsCode},</if>
+            <if test="actionPointsValue != null">#{actionPointsValue},</if>
+            <if test="groupsNum != null">#{groupsNum},</if>
+            <if test="actionsNum != null">#{actionsNum},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="batchNo != null">#{batchNo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourseTrainingRecord" parameterType="com.ruoyi.fitness.domain.CourseTrainingRecord">
+        update course_training_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="actionPointsCode != null">action_points_code = #{actionPointsCode},</if>
+            <if test="actionPointsValue != null">action_points_value = #{actionPointsValue},</if>
+            <if test="groupsNum != null">groups_num = #{groupsNum},</if>
+            <if test="actionsNum != null">actions_num = #{actionsNum},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="batchNo != null">batch_no = #{batchNo},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteCourseTrainingRecordById" parameterType="Long">
+        delete from course_training_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteCourseTrainingRecordByIds" parameterType="String">
+        delete from course_training_record where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

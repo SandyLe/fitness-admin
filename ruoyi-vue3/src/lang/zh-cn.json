@@ -820,6 +820,11 @@
     "actionIndicator": "动作指标",
     "actionComment": "课程动作评估",
     "actionPoints": "课程动作要点"
+  },
+  "courseTrainingRecord": {
+    "course": "课程",
+    "coursePlaceholder": "请选择课程",
+    "user": "用户"
   }
 
 }

@@ -303,9 +303,7 @@ const fetchColumns = async () => {
     ) {
       try {
         const res = col.optionsRequest({ ...props.hiddenParams }).then(res=>{
-
           const raw = res?.rows?.rows || res?.rows || []
-
           // ⭐ 如果有格式化函数，就转换
           if (col.optionsFormatter) {
             optionsMap.value[col.prop] = raw.map(col.optionsFormatter)
@@ -317,8 +315,6 @@ const fetchColumns = async () => {
             }))
           }
         })
-
-
       }catch (e) {
         console.log(e)
       }
