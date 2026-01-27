@@ -35,6 +35,18 @@ public class CourseActionComment {
     /** 动作指标建议 */
     @Excel(name = "动作指标建议")
     private String suggestions;
+    /** 指标 */
+    @Excel(name = "指标")
+    private Long indicatorAtandardValue;
+    /** 开始值 */
+    @Excel(name = "开始值")
+    private Long startValue;
+    /** 结束值 */
+    @Excel(name = "结束值")
+    private Long endValue;
+    /** 动作指标编码 */
+    @Excel(name = "动作指标编码")
+    private String actionPointsCode;
 
     public Long getActionCommentId() {
         return actionCommentId;
@@ -98,5 +110,37 @@ public class CourseActionComment {
 
     public void setSuggestions(String suggestions) {
         this.suggestions = suggestions;
+    }
+
+    public Long getIndicatorAtandardValue() {
+        return indicatorAtandardValue;
+    }
+
+    public void setIndicatorAtandardValue(Long indicatorAtandardValue) {
+        this.indicatorAtandardValue = indicatorAtandardValue;
+    }
+
+    public Long getStartValue() {
+        return startValue;
+    }
+
+    public void setStartValue(Long startValue) {
+        this.startValue = startValue;
+    }
+
+    public Long getEndValue() {
+        return endValue;
+    }
+
+    public void setEndValue(Long endValue) {
+        this.endValue = endValue;
+    }
+
+    public String getActionPointsCode() {
+        return actionPointsCode;
+    }
+
+    public void setActionPointsCode(String actionPointsCode) {
+        this.actionPointsCode = actionPointsCode;
     }
 }

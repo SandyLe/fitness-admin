@@ -5,7 +5,10 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.fitness.domain.CourseActionComment;
 import com.ruoyi.fitness.domain.CourseTrainingRecord;
+import com.ruoyi.fitness.domain.TrainingRecordData;
+import com.ruoyi.fitness.service.ICourseActionCommentService;
 import com.ruoyi.fitness.service.ICourseTrainingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +28,8 @@ public class CourseTrainingRecordController extends BaseController
 {
     @Autowired
     private ICourseTrainingRecordService courseTrainingRecordService;
+    @Autowired
+    private ICourseActionCommentService courseActionCommentService;
 
     /**
      * 查询课程训练记录列表
@@ -35,6 +40,37 @@ public class CourseTrainingRecordController extends BaseController
     {
         startPage();
         List<CourseTrainingRecord> list = courseTrainingRecordService.selectCourseTrainingRecordList(courseTrainingRecord);
+        list.stream().forEach(item->{
+            CourseActionComment comment = new CourseActionComment();
+            comment.setCourseId(item.getCourseId());
+            comment.setActionPointsCode(item.getActionPointsCode());
+            List<CourseActionComment> commments = courseActionCommentService.selectCourseIndicatorCommentList(comment);
+            commments.stream().forEach(tempComment->{
+                if (tempComment.getLessOrMore() > 0 && tempComment.getEndValue() < item.getActionPointsValue()) {
+                    item.setActionCommentDesc(tempComment.getActionCommentDesc());
+                    item.setSuggestions(tempComment.getSuggestions());
+                } else if (tempComment.getLessOrMore() < 0 && tempComment.getStartValue() > item.getActionPointsValue()) {
+                    item.setActionCommentDesc(tempComment.getActionCommentDesc());
+                    item.setSuggestions(tempComment.getSuggestions());
+                } else if (tempComment.getLessOrMore() == 0 && tempComment.getStartValue() < item.getActionPointsValue() && tempComment.getEndValue() > item.getActionPointsValue()) {
+                    item.setActionCommentDesc(tempComment.getActionCommentDesc());
+                    item.setSuggestions(tempComment.getSuggestions());
+                }
+            });
+        });
+
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询课程训练记录列表
+     */
+    @PreAuthorize("@ss.hasPermi('fitness:courseTrainingRecord:list')")
+    @GetMapping("/listTrainingRecordData")
+    public TableDataInfo listTrainingRecordData(CourseTrainingRecord courseTrainingRecord)
+    {
+        startPage();
+        List<TrainingRecordData> list = courseTrainingRecordService.selectCourseTrainingDataList(courseTrainingRecord);
         return getDataTable(list);
     }
 

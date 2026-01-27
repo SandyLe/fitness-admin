@@ -1,6 +1,7 @@
 package com.ruoyi.fitness.service.impl;
 
 import com.ruoyi.fitness.domain.CourseTrainingRecord;
+import com.ruoyi.fitness.domain.TrainingRecordData;
 import com.ruoyi.fitness.mapper.CourseTrainingRecordMapper;
 import com.ruoyi.fitness.service.ICourseTrainingRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,10 @@ public class CourseTrainingRecordServiceImpl implements ICourseTrainingRecordSer
     @Override
     public int deleteCourseTrainingRecord(Long[] ids) {
         return courseTrainingRecordMapper.deleteCourseTrainingRecordByIds(ids);
+    }
+
+    @Override
+    public List<TrainingRecordData> selectCourseTrainingDataList(CourseTrainingRecord courseTrainingRecord) {
+        return courseTrainingRecordMapper.selectCourseTrainingDataList(courseTrainingRecord);
     }
 }

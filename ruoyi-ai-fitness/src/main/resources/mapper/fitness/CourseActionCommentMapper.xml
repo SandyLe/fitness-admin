@@ -13,6 +13,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="actionCommentTitle"    column="action_comment_title"    />
         <result property="actionCommentDesc"    column="action_comment_desc"    />
         <result property="suggestions"    column="suggestions"    />
+        <result property="standardValue"    column="standard_value"    />
+        <result property="startValue"    column="start_value"    />
+        <result property="endValue"    column="end_value"    />
+        <result property="actionPointsCode"    column="action_points_code"    />
     </resultMap>
 
     <sql id="selectCourseActionCommentVo">
@@ -30,6 +34,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="actionCommentTitle != null "> and action_comment_title = #{actionCommentTitle}</if>
             <if test="actionCommentDesc != null "> and action_comment_desc = #{actionCommentDesc}</if>
             <if test="suggestions != null "> and suggestions = #{stansuggestionsdardValue}</if>
+        </where>
+    </select>
+
+
+    <sql id="selectCourseIndicatorCommentVo">
+        select cac.*, cai.standard_value as indicator_atandard_value, cai.start_value, cai.end_value, cai.action_points_code from course_action_comment cac left join course_action_indicator cai on cac.indicator_id = cai.action_indicator_id
+    </sql>
+
+    <select id="selectCourseIndicatorCommentList" parameterType="com.ruoyi.fitness.domain.CourseActionComment" resultMap="courseActionCommentResult">
+        <include refid="selectCourseIndicatorCommentVo"/>
+        <where>
+            <if test="actionCommentId != null "> and cac.action_comment_id = #{actionCommentId}</if>
+            <if test="courseId != null "> and cac.course_id = #{courseId}</if>
+            <if test="indicatorId != null "> and cac.indicator_id = #{indicatorId}</if>
+            <if test="lessOrMore != null "> and cac.less_or_more = #{lessOrMore}</if>
+            <if test="standardValue != null"> and cac.standard_value = #{standardValue}</if>
+            <if test="actionCommentTitle != null "> and cac.action_comment_title = #{actionCommentTitle}</if>
+            <if test="actionCommentDesc != null "> and cac.action_comment_desc = #{actionCommentDesc}</if>
+            <if test="suggestions != null "> and cac.suggestions = #{stansuggestionsdardValue}</if>
+            <if test="actionPointsCode != null "> and cai.action_points_code = #{actionPointsCode}</if>
         </where>
     </select>
 

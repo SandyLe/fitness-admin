@@ -34,6 +34,14 @@ public class CourseTrainingRecord {
     private Date endTime;
     @Excel(name = "批次号")
     private String batchNo;
+    @Excel(name = "课程名")
+    private String name;
+    @Excel(name = "动作指标")
+    private String actionPoints;
+    @Excel(name = "评论")
+    private String actionCommentDesc;
+    @Excel(name = "建议")
+    private String suggestions;
 
     public Long getRecordId() {
         return recordId;
@@ -113,5 +121,37 @@ public class CourseTrainingRecord {
 
     public void setBatchNo(String batchNo) {
         this.batchNo = batchNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getActionPoints() {
+        return actionPoints;
+    }
+
+    public void setActionPoints(String actionPoints) {
+        this.actionPoints = actionPoints;
+    }
+
+    public String getActionCommentDesc() {
+        return actionCommentDesc;
+    }
+
+    public void setActionCommentDesc(String actionCommentDesc) {
+        this.actionCommentDesc = actionCommentDesc;
+    }
+
+    public String getSuggestions() {
+        return suggestions;
+    }
+
+    public void setSuggestions(String suggestions) {
+        this.suggestions = suggestions;
     }
 }

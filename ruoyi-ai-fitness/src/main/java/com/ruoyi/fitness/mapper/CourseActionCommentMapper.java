@@ -53,4 +53,12 @@ public interface CourseActionCommentMapper {
      * @return 结果
      */
     public int deleteCourseActionCommentByIds(Long[] ids);
+
+    /**
+     * 查询课程动作评价列表
+     *
+     * @param courseActionComment 课程动作评价
+     * @return 课程动作评价集合
+     */
+    public List<CourseActionComment> selectCourseIndicatorCommentList(CourseActionComment courseActionComment);
 }

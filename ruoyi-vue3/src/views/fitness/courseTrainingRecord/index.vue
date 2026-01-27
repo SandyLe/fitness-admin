@@ -20,7 +20,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -29,7 +29,7 @@
           v-hasPermi="['ai:courseTrainingRecord:add']"
         >{{ $t('common.add') }}</el-button>
       </el-col>
-<!--        <el-col :span="1.5">
+&lt;!&ndash;        <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -37,7 +37,7 @@
           @click="handlePush"
           v-hasPermi="['ai:courseTrainingRecord:history']"
         >{{ $t('courseTrainingRecord.history') }}</el-button>
-      </el-col>-->
+      </el-col>&ndash;&gt;
       <el-col :span="1.5">
         <el-button
           type="success"
@@ -57,7 +57,7 @@
           @click="handleDelete"
           v-hasPermi="['ai:courseTrainingRecord:remove']"
         >{{ $t('common.delete') }}</el-button>
-      </el-col>
+      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -73,37 +73,22 @@
     <el-table v-loading="loading" :data="courseTrainingRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" align="center" prop="index" width="50"/>
-      <el-table-column :label="$t('courseTrainingRecord.id')" align="center" prop="id" />
-      <el-table-column :label="$t('courseTrainingRecord.nickName')" align="center" prop="nickName" :show-overflow-tooltip="true"/>
-      <el-table-column :label="$t('courseTrainingRecord.userName')" align="center" prop="userName" :show-overflow-tooltip="true"/>
-      <el-table-column :label="$t('courseTrainingRecord.gender')" align="center" prop="gender" :show-overflow-tooltip="true">
+      <el-table-column :label="$t('courseTrainingRecord.batchNo')" align="center" prop="batchNo" />
+      <el-table-column :label="$t('courseTrainingRecord.course')" align="center" prop="course" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('courseTrainingRecord.user')" align="center" prop="user" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('courseTrainingRecord.source')" align="center" prop="source" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('courseTrainingRecord.analysis')" align="center" prop="analysis" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('courseTrainingRecord.advice')" align="center" prop="advice" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('courseTrainingRecord.startTime')" align="center" prop="startTime" >
         <template #default="scope">
-          {{  scope.row.gender === 'male'? $t('courseTrainingRecord.male') : $t('courseTrainingRecord.female') }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('courseTrainingRecord.age')" align="center" prop="age" :show-overflow-tooltip="true"/>
-      <el-table-column :label="$t('courseTrainingRecord.phone')" align="center" prop="phone" :show-overflow-tooltip="true"/>
-      <el-table-column :label="$t('courseTrainingRecord.email')" align="center" prop="email" :show-overflow-tooltip="true"/>
-      <el-table-column :label="$t('courseTrainingRecord.status')" align="center" prop="status" >
-        <template #default="scope">
-          {{ scope.row.status === 1 ? $t('courseTrainingRecord.statusYes') : $t('courseTrainingRecord.statusNo') }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('common.createdTime')" align="center" prop="createTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.createdTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('common.updatedTime')" align="center" prop="updateTime" width="180">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.updatedTime) }}</span>
+          <span>{{ parseTime(scope.row.startTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-           <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['ai:courseTrainingRecord:edit']">{{ $t('courseTrainingRecord.visitcourseTrainingRecord') }}</el-button>
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['ai:courseTrainingRecord:edit']">{{ $t('common.edit') }}</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['ai:courseTrainingRecord:remove']">{{ $t('common.delete') }}</el-button>
+          <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['ai:courseTrainingRecord:edit']">{{ $t('courseTrainingRecord.visitcourseTrainingRecord') }}</el-button>
+<!--          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['ai:courseTrainingRecord:edit']">{{ $t('common.edit') }}</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['ai:courseTrainingRecord:remove']">{{ $t('common.delete') }}</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -185,69 +170,20 @@
       </template>
     </el-dialog>
 
-    <!-- 任务日志详细 -->
-    <el-dialog :title="title" v-model="openView" width="700px" append-to-body>
-      <el-form :model="form" label-width="120px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item :label="$t('courseTrainingRecord.userName')">{{ form.userName }}</el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.gender')">
-              <div v-if="form.gender == 'male'">{{ $t('courseTrainingRecord.male') }}</div>
-              <div v-else-if="form.gender == 'female'">{{ $t('courseTrainingRecord.female') }}</div>
-            </el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.height')">{{ form.height }}</el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.email')">{{ form.email }}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="$t('courseTrainingRecord.nickName')">{{ form.nickName }}</el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.age')">{{ form.age }}</el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.weight')">{{ form.weight }}</el-form-item>
-            <el-form-item :label="$t('courseTrainingRecord.phone')">{{ form.phone }}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item :label="$t('courseTrainingRecord.introduce')">{{ form.introduce }}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item :label="$t('courseTrainingRecord.fitnessGoal')">{{ form.fitnessGoal }}</el-form-item>
-          </el-col>
-          <!--          <el-col :span="12">
-                      <el-form-item :label="$t('courseTrainingRecord.cronExpression')">{{ form.cronExpression }}</el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('courseTrainingRecord.nextValidTime')">{{ parseTime(form.nextValidTime) }}</el-form-item>
-                    </el-col>
-                    <el-col :span="24">
-                      <el-form-item :label="$t('courseTrainingRecord.invokeTarget')">{{ form.invokeTarget }}</el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('courseTrainingRecord.status')">
-                        <div v-if="form.status == 0">{{ $t('courseTrainingRecord.normal') }}</div>
-                        <div v-else-if="form.status == 1">{{ $t('courseTrainingRecord.paused') }}</div>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('courseTrainingRecord.concurrent')">
-                        <div v-if="form.concurrent == 0">{{ $t('courseTrainingRecord.allowConcurrent') }}</div>
-                        <div v-else-if="form.concurrent == 1">{{ $t('courseTrainingRecord.disallowConcurrent') }}</div>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item :label="$t('job.misfirePolicy')">
-                        <div v-if="form.misfirePolicy == 0">{{ $t('courseTrainingRecord.defaultPolicy') }}</div>
-                        <div v-else-if="form.misfirePolicy == 1">{{ $t('courseTrainingRecord.immediateExecution') }}</div>
-                        <div v-else-if="form.misfirePolicy == 2">{{ $t('courseTrainingRecord.executeOnce') }}</div>
-                        <div v-else-if="form.misfirePolicy == 3">{{ $t('courseTrainingRecord.giveUpExecution') }}</div>
-                      </el-form-item>
-                    </el-col>-->
-        </el-row>
-      </el-form>
+    <!-- 训练记录详细 -->
+    <el-dialog :title="title" v-model="openRecordDtlView" width="1400px" append-to-body>
+      <CrudTable
+          title="训练记录明细"
+          ref="recordRef"
+          no-editing= true
+          :columns="recordDtlColumns"
+          :hidden-params="{ courseId, batchNo }"
+          row-key = "recordId"
+          :list-request="listCourseTrainingRecord"
+      />
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="openView = false">{{ $t('common.close') }}</el-button>
+          <el-button @click="openRecordDtlView = false">{{ $t('common.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -255,14 +191,24 @@
 </template>
 
 <script setup name="courseTrainingRecord">
-import { listCourseTrainingRecord, getCourseTrainingRecord, delCourseTrainingRecord, addCourseTrainingRecord, updateCourseTrainingRecord } from "@/api/fitness/courseTrainingRecord"
+import { listCourseTrainingRecord, listTrainingRecordData, getCourseTrainingRecord, delCourseTrainingRecord, addCourseTrainingRecord, updateCourseTrainingRecord } from "@/api/fitness/courseTrainingRecord"
+import CrudTable from "@/components/CrudTable"
 
+const recordDtlColumns = [{ label: '课程', prop: 'name'},
+  { label: '动作指标', prop: 'actionPoints'},
+  { label: '训练值', prop: 'actionPointsValue'},
+  { label: '组数', prop: 'groupsNum'},
+  { label: '动作次数', prop: 'actionsNum'},
+  { label: '开始时间', prop: 'startTime'},
+  { label: '结束时间', prop: 'endTime'},
+  { label: '评论', prop: 'actionCommentDesc'},
+  { label: '建议', prop: 'suggestions'}]
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
 const courseTrainingRecordList = ref([])
 const open = ref(false)
-const openView = ref(false)
+const openRecordDtlView = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
 const ids = ref([])
@@ -270,7 +216,10 @@ const single = ref(true)
 const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
+const courseId = ref(0)
+const batchNo = ref("")
 const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的文件服务器地址
+const recordRef = ref(null)
 
 const data = reactive({
   form: {},
@@ -308,12 +257,11 @@ const { queryParams, form, rules } = toRefs(data)
 /** 查看详情 */
 function handleVisit(row) {
   reset()
-  const _id = row.id || ids.value
-  getcourseTrainingRecord(_id).then(response => {
-    form.value = response.data
-    openView.value = true
-    title.value = proxy.$t('courseTrainingRecord.viewcourseTrainingRecord')
-  })
+  courseId.value = row.courseId
+  batchNo.value = row.batchNo
+  openRecordDtlView.value = true
+  title.value = proxy.$t('courseTrainingRecord.viewcourseTrainingRecord')
+  recordRef.value?.reload()
 }
 /** 新增按钮操作 */
 function handlePush() {
@@ -328,7 +276,7 @@ function handlePush() {
 /** 查询智能体列表 */
 function getList() {
   loading.value = true
-  listCourseTrainingRecord(queryParams.value).then(response => {
+  listTrainingRecordData(queryParams.value).then(response => {
     courseTrainingRecordList.value = response.rows
     total.value = response.total
     loading.value = false

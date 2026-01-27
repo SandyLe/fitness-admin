@@ -30,6 +30,10 @@ public class CourseActionCommentServiceImpl implements ICourseActionCommentServi
     }
 
     @Override
+    public List<CourseActionComment> selectCourseIndicatorCommentList(CourseActionComment courseActionComment) {
+        return courseActionCommentMapper.selectCourseIndicatorCommentList(courseActionComment);
+    }
+    @Override
     public int insertCourseActionComment(CourseActionComment courseActionComment) {
         return courseActionCommentMapper.insertCourseActionComment(courseActionComment);
     }

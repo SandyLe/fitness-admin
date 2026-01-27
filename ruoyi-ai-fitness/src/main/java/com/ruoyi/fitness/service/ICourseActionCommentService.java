@@ -22,6 +22,7 @@ public interface ICourseActionCommentService {
      * @return 课程动作评价集合
      */
     public List<CourseActionComment> selectCourseActionCommentList(CourseActionComment courseActionComment);
+    public List<CourseActionComment> selectCourseIndicatorCommentList(CourseActionComment courseActionComment);
 
     /**
      * 新增课程动作评价

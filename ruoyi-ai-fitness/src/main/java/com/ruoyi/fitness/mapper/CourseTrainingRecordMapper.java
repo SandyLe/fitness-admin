@@ -1,6 +1,7 @@
 package com.ruoyi.fitness.mapper;
 
 import com.ruoyi.fitness.domain.CourseTrainingRecord;
+import com.ruoyi.fitness.domain.TrainingRecordData;
 
 import java.util.List;
 
@@ -53,4 +54,12 @@ public interface CourseTrainingRecordMapper {
      * @return 结果
      */
     public int deleteCourseTrainingRecordByIds(Long[] ids);
+
+    /**
+     * 查询课程训练记录
+     *
+     * @param courseTrainingRecord 课程训练记录
+     * @return 课程训练记录集合
+     */
+    public List<TrainingRecordData> selectCourseTrainingDataList(CourseTrainingRecord courseTrainingRecord);
 }

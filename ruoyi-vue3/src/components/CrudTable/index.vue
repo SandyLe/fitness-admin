@@ -2,7 +2,7 @@
   <div class="excel-crud">
     <div class="header">
       <h3>{{ title }}</h3>
-      <button class="btn primary" @click="startAdd">新增</button>
+      <button  v-if="!noEditing" class="btn primary" @click="startAdd">新增</button>
     </div>
 
     <table>
@@ -78,8 +78,8 @@
         </td>
 
         <td>
-          <button class="btn success" @click="saveEdit(row)">保存</button>
-          <button class="btn danger" @click="remove(row)">删除</button>
+          <button v-if="!noEditing" class="btn success" @click="saveEdit(row)">保存</button>
+          <button v-if="!noEditing" class="btn danger" @click="remove(row)">删除</button>
         </td>
       </tr>
       </tbody>
@@ -94,7 +94,7 @@ import {isExternal} from "@/utils/validate.js";
 /* ================= Props ================= */
 const props = defineProps({
   title: String,
-
+  noEditing: Boolean,
   columns: {
     type: Array,
     required: true

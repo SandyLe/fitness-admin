@@ -1,6 +1,7 @@
 package com.ruoyi.fitness.service;
 
 import com.ruoyi.fitness.domain.CourseTrainingRecord;
+import com.ruoyi.fitness.domain.TrainingRecordData;
 
 import java.util.List;
 
@@ -61,4 +62,11 @@ public interface ICourseTrainingRecordService {
      * @return
      */
     int deleteCourseTrainingRecord(Long[] ids);
+
+    /**
+     * 训练记录
+     * @param courseTrainingRecord
+     * @return
+     */
+    public List<TrainingRecordData> selectCourseTrainingDataList(CourseTrainingRecord courseTrainingRecord);
 }

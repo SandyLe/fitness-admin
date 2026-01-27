@@ -824,7 +824,22 @@
   "courseTrainingRecord": {
     "course": "课程",
     "coursePlaceholder": "请选择课程",
-    "user": "用户"
+    "user": "用户",
+    "userId": "用户",
+    "courseId": "课程",
+    "recordId": "训练主键",
+    "actionPointsCode": "动作指标编码",
+    "actionPointsValue": "训练值",
+    "groupsNum": "训练组数",
+    "actionsNum": "每组次数",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "batchNo": "批次号",
+    "visitcourseTrainingRecord": "查看训练记录",
+    "source": "得分",
+    "analysis": "整体分析",
+    "advice": "建议",
+    "viewcourseTrainingRecord": "查看训练记录详情"
   }
 
 }

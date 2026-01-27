@@ -15,26 +15,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
         <result property="batchNo"    column="batch_no"    />
+        <result property="name"    column="name"    />
+        <result property="actionPoints"    column="action_points"    />
+    </resultMap>
+    <resultMap type="com.ruoyi.fitness.domain.TrainingRecordData" id="courseTrainingDataResult">
+        <result property="courseId"    column="course_id"    />
+        <result property="course"    column="course"    />
+        <result property="userId"    column="user_id"    />
+        <result property="user"    column="user"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="batchNo"    column="batch_no"    />
+        <result property="source"    column="source"    />
+        <result property="analysis"    column="analysis"    />
+        <result property="advice"    column="advice"    />
     </resultMap>
 
     <sql id="selectCourseTrainingRecordVo">
-        select record_id, course_id, user_id, action_points_code, action_points_value, groups_num, actions_num, start_time, end_time, batch_no from course_training_record
+        select ctr.record_id, ctr.course_id, ctr.user_id, ctr.action_points_code, ctr.action_points_value, ctr.groups_num, ctr.actions_num, ctr.start_time, ctr.end_time, ctr.batch_no, c.name, cai.action_points from course_training_record ctr left join course c on c.course_id = ctr.course_id left join course_action_indicator cai on (ctr.course_id = cai.course_id and ctr.action_points_code = cai.action_points_code)
     </sql>
 
     <select id="selectCourseTrainingRecordList" parameterType="com.ruoyi.fitness.domain.CourseTrainingRecord" resultMap="courseTrainingRecordResult">
         <include refid="selectCourseTrainingRecordVo"/>
         <where>
-            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="recordId != null "> and ctr.record_id = #{recordId}</if>
+            <if test="courseId != null "> and ctr.course_id = #{courseId}</if>
+            <if test="userId != null "> and ctr.user_id = #{userId}</if>
+            <if test="actionPointsCode != null "> and ctr.action_points_code = #{actionPointsCode}</if>
+            <if test="actionPointsValue != null "> and ctr.action_points_value = #{actionPointsValue}</if>
+            <if test="groupsNum != null"> and ctr.groups_num = #{groupsNum}</if>
+            <if test="actionsNum != null "> and ctr.actions_num = #{actionsNum}</if>
+            <if test="startTime != null "> and ctr.start_time = #{startTime}</if>
+            <if test="endTime != null "> and ctr.end_time = #{endTime}</if>
+            <if test="batchNo != null "> and ctr.batch_no = #{batchNo}</if>
+        </where>
+        order by end_time desc
+    </select>
+
+    <sql id="selectCourseTrainingDataVo">
+        select a.course_id,a.user_id,a.batch_no, ui.nick_name as user, c2.name as course, a.start_time, ud.* from (select course_id,user_id,batch_no,min(start_time) as start_time from course_training_record ctr group by batch_no,user_id,course_id ) a left join user_date ud on (a.course_id = ud.course_id and a.batch_no = ud.batch_no) left join user_info ui on ui.id = a.user_id left join course c2 on c2.course_id = a.course_id
+    </sql>
+    <select id="selectCourseTrainingDataList" parameterType="com.ruoyi.fitness.domain.TrainingRecordData" resultMap="courseTrainingDataResult">
+        <include refid="selectCourseTrainingDataVo"/>
+        <where>
             <if test="courseId != null "> and course_id = #{courseId}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="actionPointsCode != null "> and action_points_code = #{actionPointsCode}</if>
-            <if test="actionPointsValue != null "> and action_points_value = #{actionPointsValue}</if>
-            <if test="groupsNum != null"> and groups_num = #{groupsNum}</if>
-            <if test="actionsNum != null "> and actions_num = #{actionsNum}</if>
-            <if test="startTime != null "> and start_time = #{startTime}</if>
-            <if test="endTime != null "> and end_time = #{endTime}</if>
             <if test="batchNo != null "> and batch_no = #{batchNo}</if>
         </where>
+        order by start_time desc
     </select>
 
     <select id="selectCourseTrainingRecordById" parameterType="Long" resultMap="courseTrainingRecordResult">
