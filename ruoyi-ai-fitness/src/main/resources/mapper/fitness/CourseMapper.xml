@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectCourseById" parameterType="Long" resultMap="courseResult">
         <include refid="selectCourseVo"/>
-        where course_id = #{courseById}
+        where course_id = #{courseId}
     </select>
 
     <insert id="insertCourse" parameterType="com.ruoyi.fitness.domain.Course" useGeneratedKeys="true" keyProperty="courseId">
@@ -109,6 +109,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupsCount != null">groups_count = #{groupsCount},</if>
             <if test="actionsCount != null">actions_count = #{actionsCount},</if>
             <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>

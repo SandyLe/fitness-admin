@@ -297,11 +297,11 @@
             </dependency>
 
             <!-- 通用工具-->
-            <dependency>
+            <!--<dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-ai</artifactId>
                 <version>${ruoyi.version}</version>
-            </dependency>
+            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

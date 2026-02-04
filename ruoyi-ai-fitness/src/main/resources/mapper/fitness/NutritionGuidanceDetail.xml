@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.NutritionGuidanceDetailMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.NutritionGuidanceDetail" id="nutritionGuidanceDetailResult">
+        <result property="id"    column="id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="typeCode"    column="type_code"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemValue"    column="item_value"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectNutritionGuidanceDetailVo">
+        select id, template_id, type_code, item_name, item_value, is_deleted, create_by, create_time, update_by, update_time from nutrition_guidance_detail
+    </sql>
+
+    <select id="selectNutritionGuidanceDetailList" parameterType="com.ruoyi.fitness.domain.NutritionGuidanceDetail" resultMap="nutritionGuidanceDetailResult">
+        <include refid="selectNutritionGuidanceDetailVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="typeCode != null "> and type_code = #{typeCode}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="itemName != null  and itemName != ''"> and item_name = #{itemName}</if>
+            <if test="itemValue != null  and itemValue != ''"> and item_value = #{itemValue}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectNutritionGuidanceDetailById" parameterType="Long" resultMap="nutritionGuidanceDetailResult">
+        <include refid="selectNutritionGuidanceDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertNutritionGuidanceDetail" parameterType="com.ruoyi.fitness.domain.NutritionGuidanceDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into nutrition_guidance_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="typeCode != null">type_code,</if>
+            <if test="itemName != null">item_name,</if>
+            <if test="itemValue != null">item_value,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="typeCode != null">#{typeCode},</if>
+            <if test="itemName != null">#{itemName},</if>
+            <if test="itemValue != null">#{itemValue},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNutritionGuidanceDetail" parameterType="com.ruoyi.fitness.domain.NutritionGuidanceDetail">
+        update nutrition_guidance_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="typeCode != null">type_code = #{typeCode},</if>
+            <if test="itemName != null">item_name = #{itemName},</if>
+            <if test="itemValue != null">item_value = #{itemValue},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNutritionGuidanceDetailById" parameterType="Long">
+        delete from nutrition_guidance_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteNutritionGuidanceDetailByIds" parameterType="String">
+        delete from nutrition_guidance_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

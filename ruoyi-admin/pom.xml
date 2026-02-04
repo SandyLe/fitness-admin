@@ -49,10 +49,10 @@
         </dependency>
 
         <!-- Ai模块-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-ai</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-ai-fitness</artifactId>

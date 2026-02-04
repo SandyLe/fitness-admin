@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.fitness.mapper.UserNutritionGuidanceMapper">
+
+    <resultMap type="com.ruoyi.fitness.domain.UserNutritionGuidance" id="userNutritionGuidanceResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="themeId"    column="theme_id"    />
+        <result property="guidanceName"    column="guidance_name"    />
+        <result property="templateCode"    column="template_code"    />
+        <result property="guidanceDesc"    column="guidance_desc"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUserNutritionGuidanceVo">
+        select id, theme_id, user_id, guidance_name, template_code, guidance_desc, is_deleted, create_by, create_time, update_by, update_time from user_nutrition_guidance
+    </sql>
+
+    <select id="selectUserNutritionGuidanceList" parameterType="com.ruoyi.fitness.domain.UserNutritionGuidance" resultMap="userNutritionGuidanceResult">
+        <include refid="selectUserNutritionGuidanceVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="guidanceName != null "> and guidance_name = #{guidanceName}</if>
+            <if test="themeId != null "> and theme_id = #{themeId}</if>
+            <if test="templateCode != null  and templateCode != ''"> and template_code = #{templateCode}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectUserNutritionGuidanceById" parameterType="Long" resultMap="userNutritionGuidanceResult">
+        <include refid="selectUserNutritionGuidanceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertUserNutritionGuidance" parameterType="com.ruoyi.fitness.domain.UserNutritionGuidance" useGeneratedKeys="true" keyProperty="id">
+        insert into user_nutrition_guidance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="themeId != null">theme_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="guidanceName != null">guidance_name,</if>
+            <if test="templateCode != null">template_code,</if>
+            <if test="guidanceDesc != null">guidance_desc,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="themeId != null">#{themeId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="guidanceName != null">#{guidanceName},</if>
+            <if test="templateCode != null">#{templateCode},</if>
+            <if test="guidanceDesc != null">#{guidanceDesc},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserNutritionGuidance" parameterType="com.ruoyi.fitness.domain.UserNutritionGuidance">
+        update user_nutrition_guidance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="themeId != null">theme_id = #{themeId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="guidanceName != null">guidance_name = #{guidanceName},</if>
+            <if test="templateCode != null">template_code = #{templateCode},</if>
+            <if test="guidanceDesc != null">guidance_desc = #{guidanceDesc},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserNutritionGuidanceById" parameterType="Long">
+        delete from user_nutrition_guidance where id = #{id}
+    </delete>
+
+    <delete id="deleteUserNutritionGuidanceByIds" parameterType="String">
+        delete from user_nutrition_guidance where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
