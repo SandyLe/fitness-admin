@@ -11,6 +11,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 public class UserNutritionGuidance extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    @Excel(name = "id")
+    private Long id;
+
     /** 营养指导名称 */
     private String guidanceName;
 

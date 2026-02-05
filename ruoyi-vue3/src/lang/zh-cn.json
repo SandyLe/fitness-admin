@@ -840,6 +840,24 @@
     "analysis": "整体分析",
     "advice": "建议",
     "viewcourseTrainingRecord": "查看训练记录详情"
+  },
+  "nutritionGuidanceTemplate": {
+    "guidanceName": "模板名称",
+    "guidanceNamePlaceholder": "请输入模板名称",
+    "templateCode": "模板编码",
+    "themeId": "主题",
+    "templateDesc": "模板描述",
+    "visitnutritionGuidanceTemplate": "查看模板",
+    "confirmDelete": "确定删除?",
+    "addNutritionGuidanceTemplate": "添加营养指导模板",
+    "templateCodePlaceholder": "请输入模板编码",
+    "themeIdPlaceholder": "请选择指导主题",
+    "templateDescPlaceholder": "请输入模板备注描述",
+    "updateNutritionGuidanceTemplate": "修改营养指导模板",
+    "templateDtl": "模板明细",
+    "templateDtlManage": "营养指导模板明细管理",
+    "updateNutritionGuidanceTemplateSuccess": "更新营养指导模板成功",
+    "addNutritionGuidanceTemplateSuccess": "添加营养指导模板成功"
   }
 
 }

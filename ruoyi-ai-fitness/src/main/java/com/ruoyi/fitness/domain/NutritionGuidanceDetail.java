@@ -11,6 +11,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
 public class NutritionGuidanceDetail extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    private Long id;
+
     /** 模板ID */
     @Excel(name = "模板ID")
     private Long templateId;
@@ -28,6 +30,14 @@ public class NutritionGuidanceDetail extends BaseEntity {
     /** 状态 */
     @Excel(name = "是否删除")
     private Integer isDeleted;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getTemplateId() {
         return templateId;

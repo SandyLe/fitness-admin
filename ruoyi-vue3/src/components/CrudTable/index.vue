@@ -19,10 +19,10 @@
       <!-- 新增行 -->
       <tr v-if="adding" class="adding-row">
         <td v-for="col in columns" :key="col.prop">
-          <input v-if="!col.editor || col.editor === 'input'" v-model="editingValue" />
+          <input v-if="!col.editor || col.editor === 'input'" v-model="newRow[col.prop]" />
           <select
               v-else-if="col.editor === 'select'"
-              v-model="editingValue"
+              v-model="newRow[col.prop]"
               @change="onSelectChange"
               @blur="onBlurEdit"
           >
