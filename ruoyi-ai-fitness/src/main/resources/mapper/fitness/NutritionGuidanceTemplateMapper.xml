@@ -39,6 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectNutritionGuidanceTemplateByCode" parameterType="String" resultMap="nutritionGuidanceTemplateResult">
+        <include refid="selectNutritionGuidanceTemplateVo"/>
+        where template_code = #{templateCode}
+    </select>
+
     <insert id="insertNutritionGuidanceTemplate" parameterType="com.ruoyi.fitness.domain.NutritionGuidanceTemplate" useGeneratedKeys="true" keyProperty="id">
         insert into nutrition_guidance_template
         <trim prefix="(" suffix=")" suffixOverrides=",">

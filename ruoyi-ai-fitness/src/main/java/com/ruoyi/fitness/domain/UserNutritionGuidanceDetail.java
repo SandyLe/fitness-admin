@@ -16,7 +16,7 @@ public class UserNutritionGuidanceDetail extends BaseEntity {
 
     /** 模板ID */
     @Excel(name = "模板ID")
-    private Long nutritiGuidanceId;
+    private Long nutritionGuidanceId;
 
     /** 类型编码 */
     private String typeCode;
@@ -32,12 +32,20 @@ public class UserNutritionGuidanceDetail extends BaseEntity {
     @Excel(name = "是否删除")
     private Integer isDeleted;
 
-    public Long getNutritiGuidanceId() {
-        return nutritiGuidanceId;
+    public Long getId() {
+        return id;
     }
 
-    public void setNutritiGuidanceId(Long nutritiGuidanceId) {
-        this.nutritiGuidanceId = nutritiGuidanceId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getNutritionGuidanceId() {
+        return nutritionGuidanceId;
+    }
+
+    public void setNutritionGuidanceId(Long nutritionGuidanceId) {
+        this.nutritionGuidanceId = nutritionGuidanceId;
     }
 
     public String getTypeCode() {

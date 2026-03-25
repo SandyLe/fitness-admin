@@ -13,7 +13,7 @@ public interface NutritionGuidanceTemplateMapper {
      * @return 营养指导模板
      */
     public NutritionGuidanceTemplate selectNutritionGuidanceTemplateById(Long id);
-
+    public NutritionGuidanceTemplate selectNutritionGuidanceTemplateByCode(String templateCode);
     /**
      * 查询营养指导模板列表
      *

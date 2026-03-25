@@ -31,7 +31,7 @@ public abstract class BaseOpenApiConfig {
                 .info(new Info()
                         .title("AI医疗客服系统 API")
                         .version(ruoyiConfig.getVersion())
-                        .description("AI智能客服系统完整接口文档")
+                        .description("智能康训系统完整接口文档")
                         .contact(new Contact()
                                 .name(ruoyiConfig.getName())
                                 .email("")))

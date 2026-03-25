@@ -16,28 +16,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="nickName"    column="nick_name"    />
     </resultMap>
 
     <sql id="selectUserNutritionGuidanceVo">
-        select id, theme_id, user_id, guidance_name, template_code, guidance_desc, is_deleted, create_by, create_time, update_by, update_time from user_nutrition_guidance
+        select ung.id, ung.theme_id, ung.user_id, ung.guidance_name, ung.template_code, ung.guidance_desc, ung.is_deleted, ung.create_by, ung.create_time, ung.update_by, ung.update_time, ui.nick_name
+        from user_nutrition_guidance ung left join user_info ui on ung.user_id = ui.id
     </sql>
 
     <select id="selectUserNutritionGuidanceList" parameterType="com.ruoyi.fitness.domain.UserNutritionGuidance" resultMap="userNutritionGuidanceResult">
         <include refid="selectUserNutritionGuidanceVo"/>
         <where>
-            <if test="id != null "> and id = #{id}</if>
-            <if test="guidanceName != null "> and guidance_name = #{guidanceName}</if>
-            <if test="themeId != null "> and theme_id = #{themeId}</if>
-            <if test="templateCode != null  and templateCode != ''"> and template_code = #{templateCode}</if>
-            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
-            <if test="createBy != null "> and create_by = #{createBy}</if>
-            <if test="updateBy != null "> and update_by = #{updateBy}</if>
+            <if test="id != null "> and ung.id = #{id}</if>
+            <if test="guidanceName != null "> and ung.guidance_name = #{guidanceName}</if>
+            <if test="themeId != null "> and ung.theme_id = #{themeId}</if>
+            <if test="templateCode != null  and templateCode != ''"> and ung.template_code = #{templateCode}</if>
+            <if test="userId != null  and userId != ''"> and ung.user_id = #{userId}</if>
+            <if test="createBy != null "> and ung.create_by = #{createBy}</if>
+            <if test="updateBy != null "> and ung.update_by = #{updateBy}</if>
         </where>
     </select>
 
     <select id="selectUserNutritionGuidanceById" parameterType="Long" resultMap="userNutritionGuidanceResult">
         <include refid="selectUserNutritionGuidanceVo"/>
-        where id = #{id}
+        where ung.id = #{id}
     </select>
 
     <insert id="insertUserNutritionGuidance" parameterType="com.ruoyi.fitness.domain.UserNutritionGuidance" useGeneratedKeys="true" keyProperty="id">

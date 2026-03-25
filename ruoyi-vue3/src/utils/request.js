@@ -99,7 +99,7 @@ service.interceptors.response.use(res => {
             if (import.meta.env.DEV) {
               location.href = '/index'; 
             } else {
-              location.href = '/customer-service/index'; 
+              location.href = '/admin/index';
             }
           })
       }).catch(() => {

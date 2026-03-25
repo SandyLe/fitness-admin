@@ -71,7 +71,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update user_nutrition_guidance_detail
         <trim prefix="SET" suffixOverrides=",">
             <if test="nutritionGuidanceId != null">nutrition_guidance_id = #{nutritionGuidanceId},</if>
-            <if test="name != null">name = #{name},</if>
             <if test="typeCode != null">type_code = #{typeCode},</if>
             <if test="itemName != null">item_name = #{itemName},</if>
             <if test="itemValue != null">item_value = #{itemValue},</if>

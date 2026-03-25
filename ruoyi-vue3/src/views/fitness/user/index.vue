@@ -104,6 +104,7 @@
            <el-button link type="primary" icon="View" @click="handleVisit(scope.row)" v-hasPermi="['ai:userInfo:edit']">{{ $t('userInfo.visitUserInfo') }}</el-button>
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['ai:userInfo:edit']">{{ $t('common.edit') }}</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['ai:userInfo:remove']">{{ $t('common.delete') }}</el-button>
+          <el-button link type="primary" icon="Setting" @click="handleGuidance(scope.row)" v-hasPermi="['fitness:userNutritionGuidance:guidance']">{{ $t('userInfo.guidance') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -256,9 +257,6 @@
 
 <script setup name="userInfo">
 import { listUser, getUserInfo, delUserInfo, addUserInfo, updateUserInfo } from "@/api/fitness/user"
-import { listModel } from "@/api/ai/model"
-import { listKnowbase } from "@/api/ai/knowbase"
-
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
@@ -272,8 +270,7 @@ const single = ref(true)
 const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
-const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的文件服务器地址
-
+const userId = ref("")
 const data = reactive({
   form: {},
   queryParams: {
@@ -302,9 +299,7 @@ const data = reactive({
     // ]
   }
 })
-const modelList = ref([])
 const genderList = [{'value':'male', 'text': proxy.$t('userInfo.male')}, {'value':'female', 'text': proxy.$t('userInfo.female')}]
-const knowbaseList = ref([])
 const { queryParams, form, rules } = toRefs(data)
 
 /** 查看详情 */
@@ -373,17 +368,6 @@ function resetQuery() {
   proxy.resetForm("queryRef")
   handleQuery()
 }
-/** 导入系统提示词 */
-function importSystemPrompt(res,file) {
-  //上传txt文件 获取文件内容赋值给systemPrompt
-  if (res.code === 200) {
-    form.value.systemPrompt = res.fileName
-  } else {
-    proxy.$modal.msgError(res.msg)
-    proxy.$refs.systemPromptRef.handleRemove(file)
-  }
-
-}
 // 多选框选中数据
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.id)
@@ -451,13 +435,13 @@ function handleExport() {
   }, `userInfo_${new Date().getTime()}.xlsx`)
 }
 getList()
-const getKnowledgeBaseNames = computed(() => (knowledgeBaseIds) => {
-  console.log('knowledgeBaseIds',knowledgeBaseIds, knowbaseList.value)
-  if (!knowledgeBaseIds) return proxy.$t('userInfo.noKnowledgeBase');
-  return knowledgeBaseIds
-    .split(',')
-    .map(id => id.trim())
-    .map(id => knowbaseList.value.find(item => item.id === Number(id))?.kbName || proxy.$t('userInfo.unknownKnowledgeBase'))
-    .join(', ');
-});
+
+function handleGuidance(row) {
+  router.push({
+    path: '/fitness/fitness/userNutritionGuidance/index',
+    query: {
+      userId: row.id
+    }
+  })
+}
 </script>

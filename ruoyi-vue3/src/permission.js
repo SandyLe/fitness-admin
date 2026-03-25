@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
         })
       } else {
          // 初始化日历事件列表
-    calendarEventList({params:{curDate:formatDate(new Date(),'{y}-{m}-{d}')}}).then(res => {
+    /*calendarEventList({params:{curDate:formatDate(new Date(),'{y}-{m}-{d}')}}).then(res => {
       if (res.code === 200) {
       //  console.log(res.rows)
         res.rows.forEach(item => {
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
           item.reminderTime = new Date(item.reminderTime)
         })
       }
-    })
+    })*/
         next()
       }
     }

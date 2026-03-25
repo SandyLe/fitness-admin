@@ -29,7 +29,7 @@ public class CourseThemeController extends BaseController
     /**
      * 查询课程列表
      */
-    @PreAuthorize("@ss.hasPermi('fitness:courseTheme:list')")
+//    @PreAuthorize("@ss.hasPermi('fitness:courseTheme:list')")
     @GetMapping("/list")
     public TableDataInfo list(CourseTheme courseTheme)
     {

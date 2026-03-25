@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2025-11-24
  */
 @RestController
-@RequestMapping("/fitness/UserNutritionGuidanceDetail")
+@RequestMapping("/fitness/userNutritionGuidanceDetail")
 public class UserNutritionGuidanceDetailController extends BaseController
 {
     @Autowired
@@ -29,7 +29,7 @@ public class UserNutritionGuidanceDetailController extends BaseController
     /**
      * 查询用户营养明细列表
      */
-    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:list')")
+//    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:list')")
     @GetMapping("/list")
     public TableDataInfo list(UserNutritionGuidanceDetail userNutritionGuidanceDetail)
     {
@@ -41,7 +41,7 @@ public class UserNutritionGuidanceDetailController extends BaseController
     /**
      * 获取用户营养明细详细信息
      */
-    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:query')")
+//    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -51,7 +51,7 @@ public class UserNutritionGuidanceDetailController extends BaseController
     /**
      * 新增用户营养明细
      */
-    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:add')")
+//    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:add')")
     @Log(title = "用户营养明细", code = "log.ai.UserNutritionGuidanceDetail", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody UserNutritionGuidanceDetail userNutritionGuidanceDetail)
@@ -62,7 +62,7 @@ public class UserNutritionGuidanceDetailController extends BaseController
     /**
      * 修改用户营养明细
      */
-    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:edit')")
+//    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:edit')")
     @Log(title = "用户营养明细", code = "log.ai.UserNutritionGuidanceDetail", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody UserNutritionGuidanceDetail userNutritionGuidanceDetail)
@@ -73,7 +73,7 @@ public class UserNutritionGuidanceDetailController extends BaseController
     /**
      * 删除用户营养明细
      */
-    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:remove')")
+//    @PreAuthorize("@ss.hasPermi('fitness:userNutritionGuidanceDetail:remove')")
     @Log(title = "用户营养明细", code = "log.ai.UserNutritionGuidanceDetail", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

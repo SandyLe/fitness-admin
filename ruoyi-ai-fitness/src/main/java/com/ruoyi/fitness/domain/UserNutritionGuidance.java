@@ -14,6 +14,9 @@ public class UserNutritionGuidance extends BaseEntity {
     @Excel(name = "id")
     private Long id;
 
+    @Excel(name = "用户")
+    private Long userId;
+
     /** 营养指导名称 */
     private String guidanceName;
 
@@ -22,7 +25,7 @@ public class UserNutritionGuidance extends BaseEntity {
 
     /** 营养指导描述 */
     @Excel(name = "营养指导描述")
-    private String templateDesc;
+    private String guidanceDesc;
 
     /** 主题ID */
     @Excel(name = "主题ID")
@@ -31,6 +34,24 @@ public class UserNutritionGuidance extends BaseEntity {
     /** 状态 */
     @Excel(name = "是否删除")
     private Integer isDeleted;
+
+    private String nickName;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Integer getIsDeleted() {
         return isDeleted;
@@ -48,12 +69,12 @@ public class UserNutritionGuidance extends BaseEntity {
         this.themeId = themeId;
     }
 
-    public String getTemplateDesc() {
-        return templateDesc;
+    public String getGuidanceDesc() {
+        return guidanceDesc;
     }
 
-    public void setTemplateDesc(String templateDesc) {
-        this.templateDesc = templateDesc;
+    public void setGuidanceDesc(String guidanceDesc) {
+        this.guidanceDesc = guidanceDesc;
     }
 
     public String getTemplateCode() {
@@ -70,5 +91,13 @@ public class UserNutritionGuidance extends BaseEntity {
 
     public void setGuidanceName(String guidanceName) {
         this.guidanceName = guidanceName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

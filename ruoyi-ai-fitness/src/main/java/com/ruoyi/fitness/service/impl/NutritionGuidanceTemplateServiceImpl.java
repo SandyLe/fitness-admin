@@ -25,6 +25,11 @@ public class NutritionGuidanceTemplateServiceImpl implements INutritionGuidanceT
     }
 
     @Override
+    public NutritionGuidanceTemplate selectNutritionGuidanceTemplateByCode(String templateCode) {
+        return nutritionGuidanceTemplateMapper.selectNutritionGuidanceTemplateByCode(templateCode);
+    }
+
+    @Override
     public List<NutritionGuidanceTemplate> selectNutritionGuidanceTemplateList(NutritionGuidanceTemplate nutritionGuidanceTemplate) {
         return nutritionGuidanceTemplateMapper.selectNutritionGuidanceTemplateList(nutritionGuidanceTemplate);
     }

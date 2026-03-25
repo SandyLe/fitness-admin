@@ -80,6 +80,9 @@ public class SysUser extends BaseEntity
     })
     private SysDept dept;
 
+    /** 用户照片 */
+    private String imgUrl;
+
     /** 角色对象 */
     private List<SysRole> roles;
 
@@ -310,6 +313,14 @@ public class SysUser extends BaseEntity
         this.roleId = roleId;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -318,6 +329,7 @@ public class SysUser extends BaseEntity
             .append("userName", getUserName())
             .append("nickName", getNickName())
             .append("email", getEmail())
+            .append("imgUrl", getImgUrl())
             .append("phonenumber", getPhonenumber())
             .append("sex", getSex())
             .append("avatar", getAvatar())

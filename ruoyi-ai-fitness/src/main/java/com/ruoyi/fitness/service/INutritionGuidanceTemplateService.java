@@ -14,6 +14,7 @@ public interface INutritionGuidanceTemplateService {
      * @return 营养指导
      */
     public NutritionGuidanceTemplate selectNutritionGuidanceTemplateById(Long id);
+    public NutritionGuidanceTemplate selectNutritionGuidanceTemplateByCode(String code);
 
     /**
      * 查询营养指导列表

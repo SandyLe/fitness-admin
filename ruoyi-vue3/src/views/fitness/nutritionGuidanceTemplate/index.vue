@@ -99,7 +99,7 @@
         <el-form-item :label="$t('nutritionGuidanceTemplate.templateCode')" prop="templateCode">
           <el-input v-model="form.templateCode" :placeholder="$t('nutritionGuidanceTemplate.templateCodePlaceholder')" />
         </el-form-item>
-        <el-form-item :label="$t('nutritionGuidanceTemplate.themeId')" prop="gender">
+        <el-form-item :label="$t('nutritionGuidanceTemplate.themeId')" prop="themeId">
           <el-select v-model="form.themeId" :placeholder="$t('nutritionGuidanceTemplate.themeIdPlaceholder')">
             <el-option v-for="item in themeList" :key="item.id" :label="item.themeName" :value="item.id" />
           </el-select>
@@ -122,7 +122,7 @@
           title="营养指导模板明细"
           ref="templateDtlRef"
           :columns="recordDtlColumns"
-          :hidden-params="{ templateId }"
+          :hidden-params="{ templateId, dictType }"
           row-key = "id"
           :list-request="listNutritionGuidanceDetail"
           :add-request="addNutritionGuidanceDetail"
@@ -132,6 +132,43 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dtlDialog = false">{{ $t('common.close') }}</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+
+    <!-- 训练记录详细 -->
+    <el-dialog :title="title" v-model="openRecordDtlView" width="1400px" append-to-body>
+      <el-form :model="form" label-width="120px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item :label="$t('nutritionGuidanceTemplate.guidanceName')">{{ form.guidanceName }}</el-form-item>
+            <el-form-item :label="$t('nutritionGuidanceTemplate.themeId')">
+              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || '未指定' }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="$t('nutritionGuidanceTemplate.templateCode')">{{ form.templateCode }}</el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item :label="$t('nutritionGuidanceTemplate.templateDesc')">{{ form.templateDesc }}</el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <CrudTable
+          title="营养指导明细"
+          ref="recordRef"
+          no-editing= true
+          :columns="recordDtlColumns"
+          :hidden-params="{ templateId, dictType }"
+          row-key = "id"
+          :list-request="listNutritionGuidanceDetail"
+      />
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="openRecordDtlView = false">{{ $t('common.close') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -154,9 +191,13 @@ import {
   listNutritionGuidanceDetail,
   updateNutritionGuidanceDetail
 } from "@/api/fitness/nutritionGuidanceDetail.js";
+import {getDicts} from "@/api/system/dict/data.js";
 
-const recordDtlColumns = [
-  { label: '类型', prop: 'typeCode', editable: true },
+const recordDtlColumns = [{ label: '类型', prop: 'typeCode', editable: true, editor: 'select',
+  optionsRequest: getDicts, optionsFormatter: (item) => ({
+    label: item.dictLabel,
+    value: item.dictValue
+  })},
   { label: '项目', prop: 'itemName', editable: true },
   { label: '值', prop: 'itemValue', editable: true }]
 const { proxy } = getCurrentInstance()
@@ -164,6 +205,7 @@ const { proxy } = getCurrentInstance()
 const nutritionGuidanceTemplateList = ref([])
 const themeList = ref([])
 const open = ref(false)
+const openRecordDtlView = ref(false)
 const dtlDialog = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
@@ -173,6 +215,7 @@ const multiple = ref(true)
 const total = ref(0)
 const title = ref("")
 const templateId = ref(0)
+const dictType = ref("")
 const templateDtlRef = ref(null)
 const recordRef = ref(null)
 
@@ -210,9 +253,15 @@ const { queryParams, form, rules } = toRefs(data)
 function handleVisit(row) {
   reset()
   templateId.value = row.id
-  openRecordDtlView.value = true
-  title.value = proxy.$t('nutritionGuidanceTemplate.viewnutritionGuidanceTemplate')
+  const _id = row.id || ids.value
   recordRef.value?.reload()
+  getNutritionGuidanceTemplate(_id).then(response => {
+    form.value = response.data
+    openRecordDtlView.value = true
+    dictType.value = 'nutrition_guidance_type'
+    title.value = proxy.$t('nutritionGuidanceTemplate.viewnutritionGuidanceTemplate')
+    recordRef.value?.reload()
+  })
 }
 /** 查询智能体列表 */
 function getList() {
@@ -338,6 +387,7 @@ function handleTemplateDtl(row) {
   getNutritionGuidanceTemplate(_id).then(response => {
     form.value = response.data
     dtlDialog.value = true
+    dictType.value = 'nutrition_guidance_type'
     title.value = proxy.$t('nutritionGuidanceTemplate.templateDtlManage')
     templateDtlRef.value?.reload()
   })
