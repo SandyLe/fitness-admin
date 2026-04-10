@@ -78,7 +78,7 @@
       <el-table-column :label="$t('course.name')" align="center" prop="name" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('course.theme')" align="center" prop="themeId" :show-overflow-tooltip="true">
         <template #default="scope">
-          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || '未指定' }}
+          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || 'Not specified' }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('course.brifeIntroduction')" align="center" prop="brifeIntroduction" :show-overflow-tooltip="true">
@@ -258,7 +258,7 @@
           <el-col :span="12">
             <el-form-item :label="$t('course.name')">{{ form.name }}</el-form-item>
             <el-form-item :label="$t('course.theme')">
-              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || '未指定' }}</div>
+              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || 'Not specified' }}</div>
             </el-form-item>
             <el-form-item :label="$t('course.level')">{{ form.level }}</el-form-item>
             <el-form-item :label="$t('course.groupsCount')">{{ form.groupsCount }}</el-form-item>

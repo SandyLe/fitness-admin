@@ -70,7 +70,7 @@
       <el-table-column :label="$t('userNutritionGuidance.templateCode')" align="center" prop="templateCode" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('userNutritionGuidance.themeId')" align="center" prop="themeId" :show-overflow-tooltip="true">
         <template #default="scope">
-          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || '未指定' }}
+          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || 'Not specified' }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('userNutritionGuidance.guidanceDesc')" align="center" prop="guidanceDesc" :show-overflow-tooltip="true"/>
@@ -131,7 +131,7 @@
     <!-- 营养指导模板明细 -->
     <el-dialog :title="title" v-model="dtlDialog" width="1024px" append-to-body>
       <CrudTable
-          title="营养指导模板明细"
+          title="Nutrition guidance details"
           ref="guidanceDtlRef"
           :columns="recordDtlColumns"
           :hidden-params="{ nutritionGuidanceId, dictType }"
@@ -156,7 +156,7 @@
           <el-col :span="12">
             <el-form-item :label="$t('userNutritionGuidance.guidanceName')">{{ form.guidanceName }}</el-form-item>
             <el-form-item :label="$t('userNutritionGuidance.themeId')">
-              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || '未指定' }}</div>
+              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || 'Not specified' }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -170,7 +170,7 @@
         </el-row>
       </el-form>
       <CrudTable
-          title="营养指导明细"
+          title="Nutrition guidance details"
           ref="recordRef"
           no-editing= true
           :columns="recordDtlColumns"
@@ -207,13 +207,13 @@ import {getDicts} from "@/api/system/dict/data.js";
 import {listNutritionGuidanceTemplate, getNutritionGuidanceTemplate} from "@/api/fitness/nutritionGuidanceTemplate.js";
 import { listUser} from "@/api/fitness/user"
 
-const recordDtlColumns = [{ label: '类型', prop: 'typeCode', editable: true, editor: 'select',
+const recordDtlColumns = [{ label: 'Type', prop: 'typeCode', editable: true, editor: 'select',
   optionsRequest: getDicts, optionsFormatter: (item) => ({
     label: item.dictLabel,
     value: item.dictValue
   })},
-  { label: '项目', prop: 'itemName', editable: true },
-  { label: '值', prop: 'itemValue', editable: true }]
+  { label: 'Item', prop: 'itemName', editable: true },
+  { label: 'Value', prop: 'itemValue', editable: true }]
 const { proxy } = getCurrentInstance()
 
 const userNutritionGuidanceList = ref([])

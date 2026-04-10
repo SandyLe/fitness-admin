@@ -63,12 +63,12 @@
 
     <el-table v-loading="loading" :data="nutritionGuidanceTemplateList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" align="center" prop="index" width="50"/>
+      <el-table-column label="index" type="index" align="center" prop="index" width="50"/>
       <el-table-column :label="$t('nutritionGuidanceTemplate.guidanceName')" align="center" prop="guidanceName" />
       <el-table-column :label="$t('nutritionGuidanceTemplate.templateCode')" align="center" prop="templateCode" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('nutritionGuidanceTemplate.themeId')" align="center" prop="themeId" :show-overflow-tooltip="true">
         <template #default="scope">
-          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || '未指定' }}
+          {{ themeList.find(item => item.id === scope.row.themeId)?.themeName || 'Not specified' }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('nutritionGuidanceTemplate.templateDesc')" align="center" prop="templateDesc" :show-overflow-tooltip="true"/>
@@ -119,7 +119,7 @@
     <!-- 营养指导模板明细 -->
     <el-dialog :title="title" v-model="dtlDialog" width="1024px" append-to-body>
       <CrudTable
-          title="营养指导模板明细"
+          title="Nutrition guidance details"
           ref="templateDtlRef"
           :columns="recordDtlColumns"
           :hidden-params="{ templateId, dictType }"
@@ -144,7 +144,7 @@
           <el-col :span="12">
             <el-form-item :label="$t('nutritionGuidanceTemplate.guidanceName')">{{ form.guidanceName }}</el-form-item>
             <el-form-item :label="$t('nutritionGuidanceTemplate.themeId')">
-              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || '未指定' }}</div>
+              <div>{{ themeList.find(item => item.id === form.themeId)?.themeName || 'Not specified' }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -158,7 +158,7 @@
         </el-row>
       </el-form>
       <CrudTable
-          title="营养指导明细"
+          title="Nutrition guidance details"
           ref="recordRef"
           no-editing= true
           :columns="recordDtlColumns"
@@ -193,13 +193,13 @@ import {
 } from "@/api/fitness/nutritionGuidanceDetail.js";
 import {getDicts} from "@/api/system/dict/data.js";
 
-const recordDtlColumns = [{ label: '类型', prop: 'typeCode', editable: true, editor: 'select',
+const recordDtlColumns = [{ label: 'Type', prop: 'typeCode', editable: true, editor: 'select',
   optionsRequest: getDicts, optionsFormatter: (item) => ({
     label: item.dictLabel,
     value: item.dictValue
   })},
-  { label: '项目', prop: 'itemName', editable: true },
-  { label: '值', prop: 'itemValue', editable: true }]
+  { label: 'Item', prop: 'itemName', editable: true },
+  { label: 'Value', prop: 'itemValue', editable: true }]
 const { proxy } = getCurrentInstance()
 
 const nutritionGuidanceTemplateList = ref([])

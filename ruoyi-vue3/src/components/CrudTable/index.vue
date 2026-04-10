@@ -2,7 +2,7 @@
   <div class="excel-crud">
     <div class="header">
       <h3>{{ title }}</h3>
-      <button  v-if="!noEditing" class="btn primary" @click="startAdd">新增</button>
+      <button  v-if="!noEditing" class="btn primary" @click="startAdd">Add</button>
     </div>
 
     <table>
@@ -11,7 +11,7 @@
         <th v-for="col in columns" :key="col.prop">
           {{ col.label }}
         </th>
-        <th width="120">操作</th>
+        <th width="120">Operations</th>
       </tr>
       </thead>
 
@@ -36,8 +36,8 @@
           </select>
         </td>
         <td>
-          <button class="btn success" @click="saveNew">保存</button>
-          <button class="btn" @click="cancelAdd">取消</button>
+          <button class="btn success" @click="saveNew">Save</button>
+          <button class="btn" @click="cancelAdd">Cancel</button>
         </td>
       </tr>
 
@@ -78,8 +78,8 @@
         </td>
 
         <td>
-          <button v-if="!noEditing" class="btn success" @click="saveEdit(row)">保存</button>
-          <button v-if="!noEditing" class="btn danger" @click="remove(row)">删除</button>
+          <button v-if="!noEditing" class="btn success" @click="saveEdit(row)">SAVE</button>
+          <button v-if="!noEditing" class="btn danger" @click="remove(row)">DEL</button>
         </td>
       </tr>
       </tbody>
@@ -295,6 +295,7 @@ const resetColumn = () => {
 
 const fetchColumns = async () => {
   resetColumn()
+  debugger
   props.columns.forEach(col => {
     if (
         col.editor === 'select' &&

@@ -77,7 +77,7 @@
       <el-table-column :label="$t('agent.agentDescription')" align="center" prop="agentDescription" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('agent.model')" align="center" prop="modelId" :show-overflow-tooltip="true">
         <template #default="scope">
-          {{ modelList.find(item => item.id === scope.row.modelId)?.modelName || '未指定' }}
+          {{ modelList.find(item => item.id === scope.row.modelId)?.modelName || 'Not specified' }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('agent.knowledgeBase')" align="center" prop="knowledgeBaseIds" :show-overflow-tooltip="true">
