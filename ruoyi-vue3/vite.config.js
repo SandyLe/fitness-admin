@@ -2,8 +2,8 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
 
-// const baseUrl = 'http://localhost:8080/admin' // 后端接口
-const baseUrl = 'https://microware1985.xyz/admin-api/' // 后端接口
+const baseUrl = 'http://localhost:8080' // 后端接口
+// const baseUrl = 'https://microware1985.xyz/admin-api/' // 后端接口
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
