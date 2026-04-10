@@ -102,9 +102,9 @@ const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 const languageOptions = [
-        { value: 'zh-CN', label: '中文' },
-        { value: 'en-US', label: 'English' },
-        { value: 'id-ID', label: 'Bahasa Indonesia' }
+        /*{ value: 'zh-CN', label: '中文' },*/
+        { value: 'en-US', label: 'English' }/*,
+        { value: 'id-ID', label: 'Bahasa Indonesia' }*/
       ]
 const currentLanguage = computed(() => {
 const languageMap = {
