@@ -8,24 +8,24 @@
       <template v-if="appStore.device !== 'mobile'">
         <header-search id="header-search" class="right-menu-item" />
 
-        <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="Source Code" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip> -->
 
-        <!-- <el-tooltip content="文档地址" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="Documentation" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip> -->
         
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip content="主题模式" effect="dark" placement="bottom">
+        <el-tooltip content="Theme Mode" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect theme-switch-wrapper" @click="toggleTheme">
             <svg-icon v-if="settingsStore.isDark" icon-class="sunny" />
             <svg-icon v-if="!settingsStore.isDark" icon-class="moon" />
           </div>
         </el-tooltip>
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <el-tooltip content="Layout Size" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
        
@@ -38,7 +38,7 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="zh-CN">中文</el-dropdown-item>
+            <el-dropdown-item command="zh-CN">Chinese</el-dropdown-item>
               <el-dropdown-item command="en-US">English</el-dropdown-item>
               <el-dropdown-item command="id-ID">Bahasa Indonesia</el-dropdown-item>
           </el-dropdown-menu>
@@ -52,13 +52,13 @@
         <template #dropdown>
           <el-dropdown-menu>
             <router-link to="/user/profile">
-              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>Personal Center</el-dropdown-item>
             </router-link>
             <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
-                <span>布局设置</span>
+                <span>Layout Settings</span>
               </el-dropdown-item>
             <el-dropdown-item divided command="logout">
-              <span>退出登录</span>
+              <span>Logout</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -109,9 +109,9 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure you want to log out and exit the system?', 'Notice', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning'
   }).then(() => {
     userStore.logOut().then(() => {

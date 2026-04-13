@@ -22,7 +22,7 @@
             style="width: 100%"
           >
             <el-table-column
-              label="序号"
+              label="Index"
               width="60"
               type="index"
             ></el-table-column>

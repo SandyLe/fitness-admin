@@ -63,7 +63,7 @@
 
     <el-table v-loading="loading" :data="userNutritionGuidanceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" align="center" prop="index" width="50"/>
+      <el-table-column label="Index" type="index" align="center" prop="index" width="50"/>
       <el-table-column :label="$t('userNutritionGuidance.createTime')" align="center" prop="createTime" />
       <el-table-column :label="$t('userNutritionGuidance.nickName')" align="center" prop="nickName" />
       <el-table-column :label="$t('userNutritionGuidance.guidanceName')" align="center" prop="guidanceName" />

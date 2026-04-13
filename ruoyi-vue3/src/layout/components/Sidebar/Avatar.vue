@@ -6,7 +6,7 @@
           :src="img"
           class="avatar-image"
         />
-        <span v-else class="avatar-initial">我</span>
+        <span v-else class="avatar-initial">Me</span>
       </div>
       <h2 class="avatar-name">{{name}}</h2>
   

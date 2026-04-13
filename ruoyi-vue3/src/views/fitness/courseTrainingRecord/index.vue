@@ -72,7 +72,7 @@
 
     <el-table v-loading="loading" :data="courseTrainingRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" align="center" prop="index" width="50"/>
+      <el-table-column label="Index" type="index" align="center" prop="index" width="50"/>
       <el-table-column :label="$t('courseTrainingRecord.batchNo')" align="center" prop="batchNo" />
       <el-table-column :label="$t('courseTrainingRecord.course')" align="center" prop="course" :show-overflow-tooltip="true"/>
       <el-table-column :label="$t('courseTrainingRecord.user')" align="center" prop="user" :show-overflow-tooltip="true"/>

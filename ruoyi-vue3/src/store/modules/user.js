@@ -18,7 +18,7 @@ const useUserStore = defineStore(
       permissions: []
     }),
     actions: {
-      // 登录
+      // Login
       login(userInfo) {
         const username = userInfo.username.trim()
         const password = userInfo.password
@@ -34,7 +34,7 @@ const useUserStore = defineStore(
           })
         })
       },
-      // 获取用户信息
+      // Get user information
       getInfo() {
         return new Promise((resolve, reject) => {
           getInfo().then(res => {
@@ -53,15 +53,15 @@ const useUserStore = defineStore(
             this.name = user.userName
             this.nickName = user.nickName
             this.avatar = avatar
-            /* 初始密码提示 */
+            /* Initial password reminder */
             if(res.isDefaultModifyPwd) {
-              ElMessageBox.confirm('您的密码还是初始密码，请修改密码！',  '安全提示', {  confirmButtonText: '确定',  cancelButtonText: '取消',  type: 'warning' }).then(() => {
+              ElMessageBox.confirm('Your password is still the initial password. Please change it!',  'Security Notice', {  confirmButtonText: 'Confirm',  cancelButtonText: 'Cancel',  type: 'warning' }).then(() => {
                 router.push({ name: 'Profile', params: { activeTab: 'resetPwd' } })
               }).catch(() => {})
             }
-            /* 过期密码提示 */
+            /* Expired password reminder */
             if(!res.isDefaultModifyPwd && res.isPasswordExpired) {
-              ElMessageBox.confirm('您的密码已过期，请尽快修改密码！',  '安全提示', {  confirmButtonText: '确定',  cancelButtonText: '取消',  type: 'warning' }).then(() => {
+              ElMessageBox.confirm('Your password has expired. Please change it as soon as possible!',  'Security Notice', {  confirmButtonText: 'Confirm',  cancelButtonText: 'Cancel',  type: 'warning' }).then(() => {
                 router.push({ name: 'Profile', params: { activeTab: 'resetPwd' } })
               }).catch(() => {})
             }
@@ -71,7 +71,7 @@ const useUserStore = defineStore(
           })
         })
       },
-      // 退出系统
+      // Logout system
       logOut() {
         return new Promise((resolve, reject) => {
           logout(this.token).then(() => {
