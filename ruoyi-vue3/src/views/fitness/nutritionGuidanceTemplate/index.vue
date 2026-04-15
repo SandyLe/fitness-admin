@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="88px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="188px">
       <el-form-item :label="$t('nutritionGuidanceTemplate.guidanceName')" prop="guidanceName">
         <el-input
           v-model="queryParams.course"

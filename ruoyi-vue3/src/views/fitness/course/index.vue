@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="88px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="118px">
       <el-form-item :label="$t('course.name')" prop="name">
         <el-input
             v-model="queryParams.name"
@@ -293,7 +293,7 @@
     <!-- 课程动作标准 -->
     <el-dialog :title="title" v-model="indicatorDialog" width="1024px" append-to-body>
       <CrudTable
-          title="课课动作指标"
+          :title="$t('course.actionIndicatorTitle')"
           ref="indicatorRef"
           :columns="indicatorColumns"
           :hidden-params="{ courseId }"
@@ -312,7 +312,7 @@
     <!-- 课程动作评估 -->
     <el-dialog :title="title" v-model="commentDialog" width="1024px" append-to-body>
       <CrudTable
-          title="课课动作评估"
+          :title="$t('course.actionCommentTitle')"
           ref="commentRef"
           :columns="commentColumns"
           :hidden-params="{ courseId }"
@@ -331,7 +331,7 @@
     <!-- 课程动作要点 -->
     <el-dialog :title="title" v-model="pointDialog" width="1024px" append-to-body>
       <CrudTable
-          title="课课动作要点"
+          :title="$t('course.actionPointsTitle')"
           ref="pointRef"
           :columns="pointColumns"
           :hidden-params="{ courseId }"
@@ -387,7 +387,12 @@ const baseApi = import.meta.env.VITE_APP_BASE_API
 const courseList = ref([])
 const list = ref([])
 const themeList = ref([])
-const levelList = [{"id":"初级","text":"初级"},{"id":"中级","text":"中级"},{"id":"高级","text":"高级"}]
+const levelList = [
+  {"id":"初级","text": proxy.$t('course.primary')},
+  {"id":"中级","text": proxy.$t('course.intermediate')},
+  {"id":"高级","text": proxy.$t('course.advanced')}
+]
+
 const open = ref(false)
 const openView = ref(false)
 const indicatorDialog = ref(false)
@@ -406,25 +411,33 @@ const indicatorRef = ref(null)
 const commentRef = ref(null)
 const pointRef = ref(null)
 
-const indicatorColumns = [{ label: '动作指标名称', prop: 'actionPoints', editable: true },
-  { label: '动作指标编码', prop: 'actionPointsCode', editable: true },
-  { label: '点位1', prop: 'point1', editable: true },
-  { label: '点位2', prop: 'point2', editable: true },
-  { label: '点位3', prop: 'point3', editable: true },
-  { label: '标准值', prop: 'standardValue', editable: true },
-  { label: '开始值', prop: 'startValue', editable: true },
-  { label: '结束值', prop: 'endValue', editable: true }]
-const commentColumns = [{ label: '动作指标', prop: 'indicatorId', editable: true, editor: 'select',
+const indicatorColumns = [
+  { label: proxy.$t('course.actionPointsName'), prop: 'actionPoints', editable: true },
+  { label: proxy.$t('course.actionPointsCode'), prop: 'actionPointsCode', editable: true },
+  { label: proxy.$t('course.point1'), prop: 'point1', editable: true },
+  { label: proxy.$t('course.point2'), prop: 'point2', editable: true },
+  { label: proxy.$t('course.point3'), prop: 'point3', editable: true },
+  { label: proxy.$t('course.standardValue'), prop: 'standardValue', editable: true },
+  { label: proxy.$t('course.startValue'), prop: 'startValue', editable: true },
+  { label: proxy.$t('course.endValue'), prop: 'endValue', editable: true }
+]
+const commentColumns = [
+  { label: proxy.$t('course.indicatorId'), prop: 'indicatorId', editable: true, editor: 'select',
   optionsRequest: listCourseActionIndicator, optionsFormatter: (item) => ({
     label: item.actionPoints,
     value: item.actionIndicatorId
   })},
-  { label: '大于或小于指标', prop: 'lessOrMore', editable: true },
-  { label: '指标值', prop: 'standardValue', editable: true },
-  { label: '动作指标评估名称', prop: 'actionCommentTitle', editable: true },
-  { label: '动作指标评价', prop: 'actionCommentDesc', editable: true },
-  { label: '动作指标建议', prop: 'suggestions', editable: true }]
-const pointColumns = [{ label: '动作要点', prop: 'actionPoints', editable: true }]
+  { label: proxy.$t('course.lessOrMore'), prop: 'lessOrMore', editable: true },
+  { label: proxy.$t('course.standardValue'), prop: 'standardValue', editable: true },
+  { label: proxy.$t('course.actionCommentTitle'), prop: 'actionCommentTitle', editable: true },
+  { label: proxy.$t('course.actionCommentDesc'), prop: 'actionCommentDesc', editable: true },
+  { label: proxy.$t('course.suggestions'), prop: 'suggestions', editable: true }
+]
+
+const pointColumns = [
+  { label: proxy.$t('course.actionPoints'), prop: 'actionPoints', editable: true }
+]
+
 const data = reactive({
   form: {},
   queryParams: {

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="88px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="188px">
       <el-form-item :label="$t('courseTrainingRecord.course')" prop="course">
         <el-input
           v-model="queryParams.course"
@@ -171,9 +171,9 @@
     </el-dialog>
 
     <!-- 训练记录详细 -->
-    <el-dialog :title="title" v-model="openRecordDtlView" width="1400px" append-to-body>
+    <el-dialog :title="title" v-model="openRecordDtlView" width="1500px" append-to-body>
       <CrudTable
-          title="训练记录明细"
+          :title="$t('courseTrainingRecord.viewcourseTrainingRecord')"
           ref="recordRef"
           no-editing= true
           :columns="recordDtlColumns"
@@ -193,19 +193,20 @@
 <script setup name="courseTrainingRecord">
 import { listCourseTrainingRecord, listTrainingRecordData, getCourseTrainingRecord, delCourseTrainingRecord, addCourseTrainingRecord, updateCourseTrainingRecord } from "@/api/fitness/courseTrainingRecord"
 import CrudTable from "@/components/CrudTable"
-
-const recordDtlColumns = [{ label: '课程', prop: 'name'},
-  { label: '动作指标', prop: 'actionPoints'},
-  { label: '训练值', prop: 'actionPointsValue'},
-  { label: '组数', prop: 'groupsNum'},
-  { label: '动作次数', prop: 'actionsNum'},
-  { label: '开始时间', prop: 'startTime'},
-  { label: '结束时间', prop: 'endTime'},
-  { label: '评论', prop: 'actionCommentDesc'},
-  { label: '建议', prop: 'suggestions'}]
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
+const recordDtlColumns = [
+  { label: proxy.$t('courseTrainingRecord.course'), prop: 'name'},
+  { label: proxy.$t('courseTrainingRecord.actionPoints'), prop: 'actionPoints'},
+  { label: proxy.$t('courseTrainingRecord.actionPointsValue'), prop: 'actionPointsValue'},
+  { label: proxy.$t('courseTrainingRecord.groupsNum'), prop: 'groupsNum'},
+  { label: proxy.$t('courseTrainingRecord.actionsNum'), prop: 'actionsNum'},
+  { label: proxy.$t('courseTrainingRecord.startTime'), prop: 'startTime'},
+  { label: proxy.$t('courseTrainingRecord.endTime'), prop: 'endTime'},
+  { label: proxy.$t('courseTrainingRecord.actionCommentDesc'), prop: 'actionCommentDesc'},
+  { label: proxy.$t('courseTrainingRecord.suggestions'), prop: 'suggestions'}
+]
 const courseTrainingRecordList = ref([])
 const open = ref(false)
 const openRecordDtlView = ref(false)
