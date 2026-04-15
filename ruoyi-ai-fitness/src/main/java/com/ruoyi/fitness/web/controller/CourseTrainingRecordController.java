@@ -5,11 +5,13 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.fitness.domain.CourseActionComment;
 import com.ruoyi.fitness.domain.CourseTrainingRecord;
 import com.ruoyi.fitness.domain.TrainingRecordData;
 import com.ruoyi.fitness.service.ICourseActionCommentService;
 import com.ruoyi.fitness.service.ICourseTrainingRecordService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -116,5 +118,15 @@ public class CourseTrainingRecordController extends BaseController
     {
 //        return toAjax(CourseTrainingRecordService.deleteCourseByIds(ids));
         return toAjax(courseTrainingRecordService.deleteCourseTrainingRecord(ids));
+    }
+
+    @Log(title = "课程训练记录", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('fitness:course:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, CourseTrainingRecord courseTrainingRecord)
+    {
+        List<CourseTrainingRecord> list = courseTrainingRecordService.selectCourseTrainingRecordList(courseTrainingRecord);
+        ExcelUtil<CourseTrainingRecord> util = new ExcelUtil<CourseTrainingRecord>(CourseTrainingRecord.class);
+        util.exportExcel(response, list, "课程训练记录");
     }
 }

@@ -9,14 +9,13 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.LogUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.fitness.domain.NutritionGuidanceDetail;
-import com.ruoyi.fitness.domain.NutritionGuidanceTemplate;
-import com.ruoyi.fitness.domain.UserNutritionGuidance;
-import com.ruoyi.fitness.domain.UserNutritionGuidanceDetail;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.fitness.domain.*;
 import com.ruoyi.fitness.service.INutritionGuidanceDetailService;
 import com.ruoyi.fitness.service.INutritionGuidanceTemplateService;
 import com.ruoyi.fitness.service.IUserNutritionGuidanceDetailService;
 import com.ruoyi.fitness.service.IUserNutritionGuidanceService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -119,5 +118,14 @@ public class UserNutritionGuidanceController extends BaseController
     {
 //        return toAjax(iUserNutritionGuidanceService.deleteUserNutritionGuidanceByIds(ids));
         return toAjax(iUserNutritionGuidanceservice.deleteUserNutritionGuidance(ids));
+    }
+    @Log(title = "用户营养指导", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('fitness:course:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, UserNutritionGuidance userNutritionGuidance)
+    {
+        List<UserNutritionGuidance> list = iUserNutritionGuidanceservice.selectUserNutritionGuidanceList(userNutritionGuidance);
+        ExcelUtil<UserNutritionGuidance> util = new ExcelUtil<UserNutritionGuidance>(UserNutritionGuidance.class);
+        util.exportExcel(response, list, "用户营养指导");
     }
 }

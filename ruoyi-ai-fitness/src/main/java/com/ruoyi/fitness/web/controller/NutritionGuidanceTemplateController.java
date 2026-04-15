@@ -5,8 +5,10 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.fitness.domain.NutritionGuidanceTemplate;
 import com.ruoyi.fitness.service.INutritionGuidanceTemplateService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -80,5 +82,14 @@ public class NutritionGuidanceTemplateController extends BaseController
     {
 //        return toAjax(iNutritionGuidanceTemplateService.deleteNutritionGuidanceTemplateByIds(ids));
         return toAjax(iNutritionGuidanceTemplateService.deleteNutritionGuidanceTemplate(ids));
+    }
+    @Log(title = "营养指导模板", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('fitness:course:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, NutritionGuidanceTemplate nutritionGuidanceTemplate)
+    {
+        List<NutritionGuidanceTemplate> list = iNutritionGuidanceTemplateService.selectNutritionGuidanceTemplateList(nutritionGuidanceTemplate);
+        ExcelUtil<NutritionGuidanceTemplate> util = new ExcelUtil<NutritionGuidanceTemplate>(NutritionGuidanceTemplate.class);
+        util.exportExcel(response, list, "营养指导模板");
     }
 }

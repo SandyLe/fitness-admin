@@ -3,7 +3,8 @@ import path from 'path'
 import createVitePlugins from './vite/plugins'
 
 // const baseUrl = 'http://localhost:8080' // 后端接口
-const baseUrl = 'https://microware1985.xyz/adminapien/' // 后端接口
+const baseUrl = 'https://119.45.136.191/adminapien/' // 后端接口
+// const baseUrl = 'https://microware1985.xyz/adminapien/' // 后端接口
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {

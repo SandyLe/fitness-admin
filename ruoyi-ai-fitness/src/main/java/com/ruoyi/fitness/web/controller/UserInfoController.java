@@ -5,8 +5,10 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.fitness.domain.UserInfo;
 import com.ruoyi.fitness.service.IUserInfoService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -80,5 +82,15 @@ public class UserInfoController extends BaseController
     {
 //        return toAjax(iUserInfoService.deleteuserInfoByIds(ids));
         return toAjax(iUserInfoService.deleteUserInfo(ids));
+    }
+
+    @Log(title = "用户", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('fitness:course:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, UserInfo userInfo)
+    {
+        List<UserInfo> list = iUserInfoService.selectUserInfoList(userInfo);
+        ExcelUtil<UserInfo> util = new ExcelUtil<UserInfo>(UserInfo.class);
+        util.exportExcel(response, list, "用户");
     }
 }

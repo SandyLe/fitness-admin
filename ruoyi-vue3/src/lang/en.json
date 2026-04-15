@@ -833,9 +833,9 @@
     "actionCommentTitle": "Course Action Assessment",
     "indicatorId": "Action Indicator ID",
     "lessOrMore": "Less or More",
-    "actionCommentDesc":  "Course Action Assessment Desc",
+    "actionCommentDesc": "Course Action Assessment Desc",
     "suggestions": "Suggestions",
-    "actionPointsTitle": "Course Action Key Points",
+    "actionPointsTitle": "Course Action Key Points"
   },
   "courseTrainingRecord": {
     "course": "Course",
@@ -857,7 +857,7 @@
     "advice": "Recommendations",
     "actionPoints": "Course Action Key Points",
     "viewcourseTrainingRecord": "View Training Record Details",
-    "actionCommentDesc":  "Course Action Assessment Desc",
+    "actionCommentDesc": "Course Action Assessment Desc",
     "suggestions": "Suggestions",
     "actionPointsTitle": "Course Action Key Points"
   },
@@ -891,7 +891,7 @@
     "guidanceDtlManage": "Nutrition Guidance Detail Management",
     "viewUserNutritionGuidance": "User Nutrition Guidance Details",
     "updateUserNutritionGuidance": "Update User Nutrition Guidance",
-    "addUserNutritionGuidance":R "Add User Nutrition Guidance",
+    "addUserNutritionGuidance": "Add User Nutrition Guidance",
     "template": "Nutrition Guidance Template Selection",
     "templatePlaceholder": "Please select a nutrition guidance template",
     "templateCodePlaceholder": "Please select a nutrition guidance template",
